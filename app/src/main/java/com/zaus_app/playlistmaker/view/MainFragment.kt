@@ -26,24 +26,19 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
             searchContainer.setOnClickListener {
-                Toast.makeText(
-                    requireContext(),
-                    resources.getString(R.string.search),
-                    Toast.LENGTH_LONG
-                ).show()
+                (requireActivity() as MainActivity).launchFragment(SearchFragment())
             }
-            mediaContainer.setOnClickListener(object : View.OnClickListener {
-                override fun onClick(v: View?) {
-                    Toast.makeText(
-                        requireContext(),
-                        resources.getString(R.string.media),
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            })
+            mediaContainer.setOnClickListener {
+                (requireActivity() as MainActivity).launchFragment(MediaFragment())
+            }
             settingsContainer.setOnClickListener {
-                (requireActivity() as MainActivity).launchSettingsFragment()
+                (requireActivity() as MainActivity).launchFragment(SettingsFragment())
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

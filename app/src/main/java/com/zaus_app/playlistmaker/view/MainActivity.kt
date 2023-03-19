@@ -2,6 +2,7 @@ package com.zaus_app.playlistmaker.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import com.zaus_app.playlistmaker.R
 
 class MainActivity : AppCompatActivity() {
@@ -14,11 +15,11 @@ class MainActivity : AppCompatActivity() {
             .commit()
     }
 
-    fun launchSettingsFragment() {
+    fun launchFragment(fragment: Fragment) {
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.fragment_placeholder, SettingsFragment(), "details")
-            .addToBackStack("details")
+            .replace(R.id.fragment_placeholder, fragment, "fragment")
+            .addToBackStack(null)
             .commit()
     }
 }
