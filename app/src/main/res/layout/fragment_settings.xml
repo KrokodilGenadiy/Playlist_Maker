@@ -10,7 +10,7 @@
         android:id="@+id/go_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dimens_10_dp"
+        android:layout_margin="@dimen/dimens_20_dp"
         android:src="@drawable/ic_round_arrow_back_24"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -19,98 +19,140 @@
         android:id="@+id/header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="7dp"
-        android:text="Настройки"
+        android:layout_marginStart="@dimen/dimens_8_dp"
+        android:layout_marginTop="@dimen/dimens_14_dp"
+        android:text="@string/settings"
         android:textColor="@color/black"
-        android:textSize="22sp"
+        android:textSize="@dimen/dimens_22_sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/go_back"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-    <TextView
-        android:id="@+id/theme_text"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/dark_theme_container"
+        android:layout_width="@dimen/dimens_0_dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dimens_10_dp"
-        android:layout_marginTop="60dp"
-        android:text="Тёмная тема"
-        android:textColor="@color/black"
-        android:textSize="20sp"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/dimens_40_dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/go_back" />
-
-    <androidx.appcompat.widget.SwitchCompat
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="5dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/go_back" />
+        app:layout_constraintTop_toBottomOf="@id/header">
 
-    <TextView
-        android:id="@+id/share_text"
-        android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/theme_text"
+            android:layout_width="@dimen/dimens_0_dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center"
+            android:text="@string/black_theme"
+            android:layout_weight="1"
+            android:layout_marginStart="@dimen/dimens_16_dp"
+            android:layout_marginTop="@dimen/dimens_21_dp"
+            android:layout_marginBottom="@dimen/dimens_21_dp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimens_16_sp" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dimens_18_dp"
+            android:layout_gravity="end|center" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/share_container"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dimens_10_dp"
-        android:layout_marginTop="30dp"
-        android:text="Поделиться приложением"
-        android:textColor="@color/black"
-        android:textSize="20sp"
+        android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/theme_text" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimens_28_dp"
-        android:layout_marginEnd="8dp"
-        android:src="@drawable/ic_round_share_24"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/theme_text" />
+        app:layout_constraintTop_toBottomOf="@id/dark_theme_container">
 
-    <TextView
-        android:id="@+id/help_text"
-        android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/share_text"
+            android:layout_width="@dimen/dimens_0_dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="@dimen/dimens_16_dp"
+            android:layout_marginTop="@dimen/dimens_21_dp"
+            android:layout_marginBottom="@dimen/dimens_21_dp"
+            android:text="@string/share_app"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimens_16_sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dimens_16_dp"
+            android:src="@drawable/ic_round_share_24"
+            android:layout_gravity="center|end"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/help_container"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="30dp"
-        android:text="Написать в поддержку"
-        android:textColor="@color/black"
-        android:textSize="20sp"
+        android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/share_text" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="10dp"
-        android:src="@drawable/ic_light_mode"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/share_text" />
+        app:layout_constraintTop_toBottomOf="@id/share_container">
 
-    <TextView
-        android:id="@+id/agreement_text"
-        android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/help_text"
+            android:layout_width="@dimen/dimens_0_dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/write_to_support"
+            android:textColor="@color/black"
+            android:layout_marginStart="@dimen/dimens_16_dp"
+            android:layout_marginTop="@dimen/dimens_21_dp"
+            android:layout_marginBottom="@dimen/dimens_21_dp"
+            android:textSize="@dimen/dimens_16_sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_light_mode"
+            android:layout_marginEnd="@dimen/dimens_14_dp"
+            android:layout_gravity="center|end"/>
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/agreement_container"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="30dp"
-        android:text="Пользовательское соглашение"
-        android:textColor="@color/black"
-        android:textSize="20sp"
+        android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/help_text" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="10dp"
-        android:src="@drawable/ic_round_arrow_forward_ios_24"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/help_text" />
+        app:layout_constraintTop_toBottomOf="@id/help_container">
+
+        <TextView
+            android:id="@+id/agreement_text"
+            android:layout_width="@dimen/dimens_0_dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/user_agreement"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimens_16_sp"
+            android:layout_marginTop="@dimen/dimens_21_dp"
+            android:layout_marginBottom="@dimen/dimens_21_dp"
+            android:layout_marginStart="@dimen/dimens_16_dp"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dimens_14_dp"
+            android:src="@drawable/ic_round_arrow_forward_ios_24"
+            android:layout_gravity="center|end"/>
+
+    </LinearLayout>
+
+
+
 
 
 
