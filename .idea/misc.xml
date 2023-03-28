@@ -3,12 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/alexu/AndroidStudioProjects/PlaylistMaker/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.22" />
+        <entry key="..\:/Users/alexu/AndroidStudioProjects/PlaylistMaker/app/src/main/res/drawable/ic_arrow_forward_24.xml" value="0.22" />
+        <entry key="..\:/Users/alexu/AndroidStudioProjects/PlaylistMaker/app/src/main/res/drawable/ic_launcher_background.xml" value="0.22" />
         <entry key="..\:/Users/alexu/AndroidStudioProjects/PlaylistMaker/app/src/main/res/drawable/ic_light_mode.xml" value="0.321" />
         <entry key="..\:/Users/alexu/AndroidStudioProjects/PlaylistMaker/app/src/main/res/drawable/ic_round_arrow_back_24.xml" value="0.321" />
+        <entry key="..\:/Users/alexu/AndroidStudioProjects/PlaylistMaker/app/src/main/res/drawable/ic_round_arrow_forward_ios_24.xml" value="0.22" />
+        <entry key="..\:/Users/alexu/AndroidStudioProjects/PlaylistMaker/app/src/main/res/drawable/ic_round_library_music_24.xml" value="0.22" />
         <entry key="..\:/Users/alexu/AndroidStudioProjects/PlaylistMaker/app/src/main/res/drawable/ic_round_search_24.xml" value="0.321" />
+        <entry key="..\:/Users/alexu/AndroidStudioProjects/PlaylistMaker/app/src/main/res/drawable/ic_round_settings_24.xml" value="0.22" />
         <entry key="..\:/Users/alexu/AndroidStudioProjects/PlaylistMaker/app/src/main/res/drawable/ic_round_share_24.xml" value="0.321" />
         <entry key="..\:/Users/alexu/AndroidStudioProjects/PlaylistMaker/app/src/main/res/layout/activity_main.xml" value="0.35260416666666666" />
-        <entry key="..\:/Users/alexu/AndroidStudioProjects/PlaylistMaker/app/src/main/res/layout/fragment_main.xml" value="0.2" />
+        <entry key="..\:/Users/alexu/AndroidStudioProjects/PlaylistMaker/app/src/main/res/layout/fragment_main.xml" value="0.523936170212766" />
         <entry key="..\:/Users/alexu/AndroidStudioProjects/PlaylistMaker/app/src/main/res/layout/fragment_media.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/alexu/AndroidStudioProjects/PlaylistMaker/app/src/main/res/layout/fragment_search.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/alexu/AndroidStudioProjects/PlaylistMaker/app/src/main/res/layout/fragment_settings.xml" value="0.36666666666666664" />
