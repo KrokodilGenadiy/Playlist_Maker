@@ -28,14 +28,16 @@
         app:layout_constraintStart_toEndOf="@id/go_back"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <LinearLayout
         android:id="@+id/dark_theme_container"
         android:layout_width="@dimen/dimens_0_dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
         android:orientation="horizontal"
-        android:layout_marginTop="@dimen/dimens_40_dp"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/header">
 
         <TextView
@@ -43,21 +45,21 @@
             android:layout_width="@dimen/dimens_0_dp"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center"
-            android:text="@string/black_theme"
-            android:layout_weight="1"
             android:layout_marginStart="@dimen/dimens_16_dp"
             android:layout_marginTop="@dimen/dimens_21_dp"
+            android:layout_marginEnd="@dimen/dimens_8_dp"
             android:layout_marginBottom="@dimen/dimens_21_dp"
+            android:layout_weight="1"
+            android:text="@string/black_theme"
             android:textColor="@color/black"
             android:textSize="@dimen/dimens_16_sp" />
 
         <androidx.appcompat.widget.SwitchCompat
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/dimens_18_dp"
-            android:layout_gravity="end|center" />
+            android:layout_gravity="end|center"
+            android:layout_marginEnd="@dimen/dimens_18_dp" />
     </LinearLayout>
-
 
     <LinearLayout
         android:id="@+id/share_container"
@@ -76,6 +78,7 @@
             android:layout_marginStart="@dimen/dimens_16_dp"
             android:layout_marginTop="@dimen/dimens_21_dp"
             android:layout_marginBottom="@dimen/dimens_21_dp"
+            android:layout_marginEnd="@dimen/dimens_8_dp"
             android:text="@string/share_app"
             android:textColor="@color/black"
             android:textSize="@dimen/dimens_16_sp" />
@@ -108,6 +111,7 @@
             android:layout_marginStart="@dimen/dimens_16_dp"
             android:layout_marginTop="@dimen/dimens_21_dp"
             android:layout_marginBottom="@dimen/dimens_21_dp"
+            android:layout_marginEnd="@dimen/dimens_8_dp"
             android:textSize="@dimen/dimens_16_sp" />
 
         <ImageView
@@ -140,7 +144,8 @@
             android:textSize="@dimen/dimens_16_sp"
             android:layout_marginTop="@dimen/dimens_21_dp"
             android:layout_marginBottom="@dimen/dimens_21_dp"
-            android:layout_marginStart="@dimen/dimens_16_dp"/>
+            android:layout_marginStart="@dimen/dimens_16_dp"
+            android:layout_marginEnd="@dimen/dimens_8_dp"/>
 
         <ImageView
             android:layout_width="wrap_content"
