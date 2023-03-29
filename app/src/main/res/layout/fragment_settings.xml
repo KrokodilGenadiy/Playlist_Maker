@@ -54,11 +54,10 @@
             android:textColor="@color/black"
             android:textSize="@dimen/dimens_16_sp" />
 
-        <ImageView
+        <androidx.appcompat.widget.SwitchCompat
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/dimens_12_dp"
-            android:src="@drawable/ic_switch_24"
             android:layout_gravity="center|end"/>
     </LinearLayout>
 
