@@ -7,5 +7,6 @@
     <string name="user_agreement">Пользовательское соглашение</string>
     <string name="write_to_support">Написать в поддержку</string>
     <string name="share_app">Поделиться приложением</string>
-
+    <string name="search_screen_header">Поиск</string>
+    <string name="search_hint">Поиск</string>
 </resources>
