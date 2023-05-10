@@ -6,45 +6,50 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.SearchFragment">
 
+
+    <ImageView
+        android:id="@+id/arrow_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/IconTint"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:src="@drawable/ic_round_arrow_back_24"
+        android:layout_marginTop="@dimen/dimens_20_dp"
+        android:layout_marginStart="@dimen/dimens_20_dp"/>
+
     <TextView
         android:id="@+id/header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dimens_16_dp"
+        android:layout_marginStart="@dimen/dimens_28_dp"
         android:layout_marginTop="@dimen/dimens_14_dp"
         android:text="@string/search_screen_header"
-        android:textColor="@color/black"
+        style="@style/SearchFragmentTitle"
         android:fontFamily="@font/ys_display_medium"
         android:textSize="@dimen/dimens_22_sp"
+        app:layout_constraintStart_toEndOf="@id/arrow_back"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:queryHint="@string/search_hint"
+        android:theme="@style/AppSearchView"
+        app:queryHint="@string/search_hint"
+        app:defaultQueryHint="@string/search_hint"
+        android:queryBackground="@android:color/transparent"
+        android:iconifiedByDefault="false"
+        app:iconifiedByDefault="false"
+        app:queryBackground="@null"
+        android:layout_marginStart="@dimen/dimens_16_dp"
+        android:layout_marginTop="@dimen/dimens_64_dp"
+        android:layout_marginEnd="@dimen/dimens_16_dp"
+        android:background="@drawable/background_search_view"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/search_bar_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="@dimen/dimens_64_dp"
-        android:layout_marginStart="@dimen/dimens_16_dp"
-        android:layout_marginEnd="@dimen/dimens_16_dp">
 
-        <EditText
-            android:id="@+id/search_query_edittext"
-            android:layout_width="@dimen/dimens_0_dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="@string/search_hint"
-            android:inputType="text"
-            android:maxLines="1" />
-
-        <ImageButton
-            android:id="@+id/clearSearchButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_round_close"/>
-
-    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

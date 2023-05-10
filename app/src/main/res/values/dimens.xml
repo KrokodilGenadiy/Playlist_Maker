@@ -25,4 +25,5 @@
     <dimen name="dimens_21_dp">21dp</dimen>
     <dimen name="dimens_5_dp">5dp</dimen>
     <dimen name="dimens_64_dp">64dp</dimen>
+    <dimen name="dimens_60_dp">60dp</dimen>
 </resources>

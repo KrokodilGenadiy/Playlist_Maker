@@ -31,7 +31,16 @@
         <item name="fontFamily">@font/ys_display_regular</item>
         <item name="android:textSize">@dimen/dimens_16_sp</item>
     </style>
+    <style name="AppSearchView" parent="Widget.AppCompat.SearchView" >
+        <item name="android:textSize">@dimen/dimens_16_sp</item>
+        <item name="fontFamily">@font/ys_display_regular</item>
+    </style>
     <style name="IconTint">
         <item name="tint">?attr/colorOnPrimary</item>
     </style>
+
+    <style name="SearchFragmentTitle">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
 </resources>

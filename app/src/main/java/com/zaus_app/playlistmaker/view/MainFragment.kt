@@ -26,13 +26,13 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
             searchContainer.setOnClickListener {
-                (requireActivity() as MainActivity).launchFragment(SearchFragment())
+                (requireActivity() as MainActivity).launchFragment(SearchFragment(),"Search")
             }
             mediaContainer.setOnClickListener {
-                (requireActivity() as MainActivity).launchFragment(MediaFragment())
+                (requireActivity() as MainActivity).launchFragment(MediaFragment(),"Media")
             }
             settingsContainer.setOnClickListener {
-                (requireActivity() as MainActivity).launchFragment(SettingsFragment())
+                (requireActivity() as MainActivity).launchFragment(SettingsFragment(),"Settings")
             }
         }
     }
