@@ -42,43 +42,50 @@ class SettingsFragment : Fragment() {
     }
 
     private fun shareApp() {
-        val courseLink = "https://praktikum.yandex.ru/android/"
         val shareIntent = Intent(Intent.ACTION_SEND).apply {
-            type = "text/plain"
-            putExtra(Intent.EXTRA_TEXT, courseLink)
+            type = TEXT_TYPE
+            putExtra(Intent.EXTRA_TEXT, COURSE_URL)
         }
-        startActivity(Intent.createChooser(shareIntent, "Поделиться курсом"))
+        startActivity(Intent.createChooser(shareIntent, SHARE_COURSE))
     }
 
     private fun writeToSupport() {
-        val email = "example@mail.com"
-        val subject = "Сообщение разработчикам и разработчицам приложения Playlist Maker"
-        val body = "Спасибо разработчикам и разработчицам за крутое приложение!"
-
         val intent = Intent(Intent.ACTION_SEND).apply {
-            putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
-            putExtra(Intent.EXTRA_SUBJECT, subject)
-            putExtra(Intent.EXTRA_TEXT, body)
-            type = "message/rfc822"
+            putExtra(Intent.EXTRA_EMAIL, arrayOf(EMAIL))
+            putExtra(Intent.EXTRA_SUBJECT, SUBJECT)
+            putExtra(Intent.EXTRA_TEXT, BODY)
+            type = MESSAGE_TYPE
         }
 
-        val chooserIntent = Intent.createChooser(intent, "Send email")
+        val chooserIntent = Intent.createChooser(intent, TITLE)
         if (intent.resolveActivity(requireActivity().packageManager) != null) {
             startActivity(chooserIntent)
         } else {
-            Toast.makeText(requireContext(), "No email client found", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), ERROR_TEXT, Toast.LENGTH_SHORT).show()
         }
 
     }
 
     private fun openAgreement() {
-        val url = "https://yandex.ru/legal/practicum_offer/"
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(AGREEMENT_URL))
         startActivity(intent)
     }
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    companion object {
+        const val EMAIL = "example@mail.com"
+        const val SUBJECT = "Сообщение разработчикам и разработчицам приложения Playlist Maker"
+        const val BODY = "Спасибо разработчикам и разработчицам за крутое приложение!"
+        const val MESSAGE_TYPE = "message/rfc822"
+        const val TITLE = "Send email"
+        const val COURSE_URL = "https://praktikum.yandex.ru/android/"
+        const val AGREEMENT_URL = "https://yandex.ru/legal/practicum_offer/"
+        const val SHARE_COURSE = "Поделиться курсом"
+        const val ERROR_TEXT = "No email client found"
+        const val TEXT_TYPE = "text/plain"
     }
 }
