@@ -9,4 +9,14 @@
     <string name="share_app">Поделиться приложением</string>
     <string name="search_screen_header">Поиск</string>
     <string name="search_hint">Поиск</string>
+    <string name="email">"example@mail.com"</string>
+    <string name="subject">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
+    <string name="body">Спасибо разработчикам и разработчицам за крутое приложение!</string>
+    <string name="message_type">message/rfc822</string>
+    <string name="title">Send email</string>
+    <string name="course_url">https://praktikum.yandex.ru/android/</string>
+    <string name="agreement_url">https://yandex.ru/legal/practicum_offer/</string>
+    <string name="error_text">No email client found</string>
+    <string name="text_type">text/plain</string>
+    <string name="share_course">Поделиться курсом</string>
 </resources>

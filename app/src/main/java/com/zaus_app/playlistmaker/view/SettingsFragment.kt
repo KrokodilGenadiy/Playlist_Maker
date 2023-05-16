@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.zaus_app.playlistmaker.R
 import com.zaus_app.playlistmaker.databinding.FragmentSettingsBinding
 
 
@@ -43,31 +44,31 @@ class SettingsFragment : Fragment() {
 
     private fun shareApp() {
         val shareIntent = Intent(Intent.ACTION_SEND).apply {
-            type = TEXT_TYPE
-            putExtra(Intent.EXTRA_TEXT, COURSE_URL)
+            type = getStringFromRes(R.string.text_type)
+            putExtra(Intent.EXTRA_TEXT, getStringFromRes(R.string.text_type))
         }
-        startActivity(Intent.createChooser(shareIntent, SHARE_COURSE))
+        startActivity(Intent.createChooser(shareIntent, getStringFromRes(R.string.share_course)))
     }
 
     private fun writeToSupport() {
         val intent = Intent(Intent.ACTION_SEND).apply {
-            putExtra(Intent.EXTRA_EMAIL, arrayOf(EMAIL))
-            putExtra(Intent.EXTRA_SUBJECT, SUBJECT)
-            putExtra(Intent.EXTRA_TEXT, BODY)
-            type = MESSAGE_TYPE
+            putExtra(Intent.EXTRA_EMAIL, arrayOf(getStringFromRes(R.string.email)))
+            putExtra(Intent.EXTRA_SUBJECT, getStringFromRes(R.string.subject))
+            putExtra(Intent.EXTRA_TEXT, getStringFromRes(R.string.body))
+            type = getStringFromRes(R.string.message_type)
         }
 
-        val chooserIntent = Intent.createChooser(intent, TITLE)
+        val chooserIntent = Intent.createChooser(intent, getStringFromRes(R.string.title))
         if (intent.resolveActivity(requireActivity().packageManager) != null) {
             startActivity(chooserIntent)
         } else {
-            Toast.makeText(requireContext(), ERROR_TEXT, Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getStringFromRes(R.string.error_text), Toast.LENGTH_SHORT).show()
         }
 
     }
 
     private fun openAgreement() {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(AGREEMENT_URL))
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getStringFromRes(R.string.agreement_url)))
         startActivity(intent)
     }
 
@@ -76,16 +77,5 @@ class SettingsFragment : Fragment() {
         _binding = null
     }
 
-    companion object {
-        const val EMAIL = "example@mail.com"
-        const val SUBJECT = "Сообщение разработчикам и разработчицам приложения Playlist Maker"
-        const val BODY = "Спасибо разработчикам и разработчицам за крутое приложение!"
-        const val MESSAGE_TYPE = "message/rfc822"
-        const val TITLE = "Send email"
-        const val COURSE_URL = "https://praktikum.yandex.ru/android/"
-        const val AGREEMENT_URL = "https://yandex.ru/legal/practicum_offer/"
-        const val SHARE_COURSE = "Поделиться курсом"
-        const val ERROR_TEXT = "No email client found"
-        const val TEXT_TYPE = "text/plain"
-    }
+    private fun getStringFromRes(resId: Int) = resources.getString(resId)
 }
