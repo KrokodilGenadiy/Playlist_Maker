@@ -2,9 +2,9 @@ package com.zaus_app.playlistmaker.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
 import androidx.fragment.app.Fragment
 import com.zaus_app.playlistmaker.R
+import com.zaus_app.playlistmaker.view.fragments.MainFragment
 
 class MainActivity : AppCompatActivity() {
     private var currentFragmentTag: String? = null

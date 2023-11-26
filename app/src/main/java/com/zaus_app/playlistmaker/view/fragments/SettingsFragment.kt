@@ -1,4 +1,4 @@
-package com.zaus_app.playlistmaker.view
+package com.zaus_app.playlistmaker.view.fragments
 
 import android.content.Intent
 import android.net.Uri
