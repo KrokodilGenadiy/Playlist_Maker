@@ -9,12 +9,16 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.zaus_app.playlistmaker.databinding.FragmentSearchBinding
+import com.zaus_app.playlistmaker.utils.TrackDatabase
+import com.zaus_app.playlistmaker.view.rv_adapter.TrackAdapter
 
 
 class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
+    private val trackAdapter = TrackAdapter()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -29,6 +33,7 @@ class SearchFragment : Fragment() {
             parentFragmentManager.popBackStack()
         }
         initSearchView()
+        setUpAdapter()
     }
 
     private fun initSearchView() {
@@ -52,6 +57,15 @@ class SearchFragment : Fragment() {
             })
         }
     }
+
+    private fun setUpAdapter() {
+        binding.trackRecycler.apply {
+            adapter = trackAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+            trackAdapter.submitList(TrackDatabase.trackList)
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null

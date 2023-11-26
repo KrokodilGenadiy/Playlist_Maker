@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.zaus_app.playlistmaker.R
 import com.zaus_app.playlistmaker.data.Track
 import com.zaus_app.playlistmaker.databinding.TrackItemBinding
@@ -29,13 +30,13 @@ class TrackAdapter :
         fun bind(track: Track) {
             binding.apply {
                 trackName.text = track.trackName
-                groupName.text = track.artistName
+                artistName.text = track.artistName
                 duration.text = track.trackTime
                 Glide.with(root.context)
                     .load(track.artworkUrl100)
                     .centerCrop()
                     .placeholder(R.drawable.placeholder)
-                    .into(poster)
+                    .into(image)
             }
         }
     }
