@@ -1,13 +1,12 @@
-package com.zaus_app.playlistmaker.view
+package com.zaus_app.playlistmaker.view.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.zaus_app.playlistmaker.R
 import com.zaus_app.playlistmaker.databinding.FragmentMainBinding
+import com.zaus_app.playlistmaker.view.MainActivity
 
 
 class MainFragment : Fragment() {
@@ -26,13 +25,13 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
             searchContainer.setOnClickListener {
-                (requireActivity() as MainActivity).launchFragment(SearchFragment())
+                (requireActivity() as MainActivity).launchFragment(SearchFragment(),"Search")
             }
             mediaContainer.setOnClickListener {
-                (requireActivity() as MainActivity).launchFragment(MediaFragment())
+                (requireActivity() as MainActivity).launchFragment(MediaFragment(),"Media")
             }
             settingsContainer.setOnClickListener {
-                (requireActivity() as MainActivity).launchFragment(SettingsFragment())
+                (requireActivity() as MainActivity).launchFragment(SettingsFragment(),"Settings")
             }
         }
     }
