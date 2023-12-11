@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.zaus_app.playlistmaker.databinding.FragmentMainBinding
 import com.zaus_app.playlistmaker.view.MainActivity
+import com.zaus_app.playlistmaker.view.fragments.search_fragment.SearchFragment
 
 
 class MainFragment : Fragment() {

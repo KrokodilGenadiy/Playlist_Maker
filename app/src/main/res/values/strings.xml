@@ -19,4 +19,7 @@
     <string name="error_text">No email client found</string>
     <string name="text_type">text/plain</string>
     <string name="share_course">Поделиться курсом</string>
+    <string name="placeholder_nf_text">Ничего не нашлось</string>
+    <string name="placeholder_ce_text">Проблемы со связью \n\n Загрузка не удалась. Проверьте подключение к интернету</string>
+    <string name="refresh">Обновить</string>
 </resources>
