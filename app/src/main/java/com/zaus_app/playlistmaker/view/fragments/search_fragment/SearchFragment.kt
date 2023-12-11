@@ -53,6 +53,7 @@ class SearchFragment : Fragment() {
                 .setOnClickListener {
                     setQuery("", false)
                     clearFocus()
+                    trackAdapter.submitList(null)
                     val inputMethodManager =
                         context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     inputMethodManager.hideSoftInputFromWindow(binding.searchView.windowToken, 0)
