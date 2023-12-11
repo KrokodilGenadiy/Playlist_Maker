@@ -9,6 +9,8 @@ import com.bumptech.glide.Glide
 import com.zaus_app.playlistmaker.R
 import com.zaus_app.playlistmaker.data.Track
 import com.zaus_app.playlistmaker.databinding.TrackItemBinding
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class TrackAdapter :
     ListAdapter<Track, TrackAdapter.TrackViewHolder>(TrackDiffCallback()) {
@@ -31,7 +33,7 @@ class TrackAdapter :
             binding.apply {
                 trackName.text = track.trackName
                 artistName.text = track.artistName
-                duration.text = track.trackTime
+                duration.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
                 Glide.with(root.context)
                     .load(track.artworkUrl100)
                     .centerCrop()
