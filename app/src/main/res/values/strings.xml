@@ -22,4 +22,6 @@
     <string name="placeholder_nf_text">Ничего не нашлось</string>
     <string name="placeholder_ce_text">Проблемы со связью \n\n Загрузка не удалась. Проверьте подключение к интернету</string>
     <string name="refresh">Обновить</string>
+    <string name="history_searched_text">Вы искали</string>
+    <string name="clear_history_text">Очистить историю</string>
 </resources>

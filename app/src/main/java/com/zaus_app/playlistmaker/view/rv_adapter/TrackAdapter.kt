@@ -12,13 +12,15 @@ import com.zaus_app.playlistmaker.databinding.TrackItemBinding
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class TrackAdapter :
+class TrackAdapter(private val clickListener: OnItemClickListener) :
     ListAdapter<Track, TrackAdapter.TrackViewHolder>(TrackDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val binding =
             TrackItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return TrackViewHolder(binding)
+        return TrackViewHolder(binding) {
+            clickListener.click(getItem(it))
+        }
     }
 
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
@@ -26,9 +28,14 @@ class TrackAdapter :
         holder.bind(track)
     }
 
-    inner class TrackViewHolder(private val binding: TrackItemBinding) :
+    inner class TrackViewHolder(private val binding: TrackItemBinding, clickAtPosition: (Int) -> Unit) :
         RecyclerView.ViewHolder(binding.root) {
 
+        init {
+            binding.root.setOnClickListener {
+                clickAtPosition(adapterPosition)
+            }
+        }
         fun bind(track: Track) {
             binding.apply {
                 trackName.text = track.trackName
@@ -51,5 +58,9 @@ class TrackAdapter :
         override fun areContentsTheSame(oldItem: Track, newItem: Track): Boolean {
             return oldItem == newItem
         }
+    }
+
+    interface OnItemClickListener {
+        fun click(track: Track)
     }
 }
