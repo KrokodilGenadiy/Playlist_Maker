@@ -5,7 +5,9 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.zaus_app.playlistmaker.R
 import com.zaus_app.playlistmaker.view.fragments.MainFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private var currentFragmentTag: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
