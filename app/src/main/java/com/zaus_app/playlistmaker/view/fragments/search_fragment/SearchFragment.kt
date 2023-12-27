@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -26,16 +27,9 @@ import kotlinx.coroutines.withContext
 class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
-    private val trackAdapter = TrackAdapter(object : TrackAdapter.OnItemClickListener {
-        override fun click(track: Track) {
-            viewModel.saveTrack(track)
-        }
-    })
-    private val historyAdapter = TrackAdapter(object : TrackAdapter.OnItemClickListener {
-        override fun click(track: Track) {
-        }
-    })
     private val viewModel: SearchViewModel by viewModels()
+    private val trackAdapter = TrackAdapter { track -> viewModel.saveTrack(track)}
+    private val historyAdapter = TrackAdapter { }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -73,27 +67,22 @@ class SearchFragment : Fragment() {
                 historyAdapter.submitList(null)
                 historyContainer.visibility = View.GONE
             }
+            updateHistoryVisibility(historyAdapter.currentList)
         }
     }
 
     private fun updateHistoryVisibility(history: List<Track>) {
-        binding.historyContainer.visibility = if (history.isNotEmpty()) View.VISIBLE else View.GONE
+        binding.historyContainer.isVisible = history.isNotEmpty() && binding.searchView.query.isNullOrBlank() && trackAdapter.currentList.isEmpty()
     }
 
     private fun initSearchView() {
         with(binding.searchView) {
-            setOnQueryTextFocusChangeListener() { _, hasFocus ->
-                if (hasFocus && query.isNullOrBlank()) {
-                    updateHistoryVisibility(historyAdapter.currentList)
-                } else {
-                    updateHistoryVisibility(emptyList())
-                }
-            }
             findViewById<ImageView>(androidx.appcompat.R.id.search_close_btn)
                 .setOnClickListener {
                     setQuery("", false)
                     clearFocus()
                     trackAdapter.submitList(null)
+                    updateHistoryVisibility(historyAdapter.currentList)
                     val inputMethodManager =
                         context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     inputMethodManager.hideSoftInputFromWindow(binding.searchView.windowToken, 0)
@@ -108,10 +97,7 @@ class SearchFragment : Fragment() {
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    if (newText.isNullOrBlank() && trackAdapter.currentList.isEmpty())
-                        updateHistoryVisibility(historyAdapter.currentList)
-                    else
-                        updateHistoryVisibility(emptyList())
+                    updateHistoryVisibility(historyAdapter.currentList)
                     return true
                 }
             })

@@ -60,7 +60,7 @@ class TrackAdapter(private val clickListener: OnItemClickListener) :
         }
     }
 
-    interface OnItemClickListener {
+    fun interface OnItemClickListener {
         fun click(track: Track)
     }
 }

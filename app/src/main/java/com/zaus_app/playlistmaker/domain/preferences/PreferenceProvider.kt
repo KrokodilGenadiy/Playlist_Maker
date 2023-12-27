@@ -18,8 +18,7 @@ class PreferenceProvider(context: Context) {
     private val preference: SharedPreferences =
         appContext.getSharedPreferences("settings", Context.MODE_PRIVATE)
 
-
-    private val _historyFlow = callbackFlow<List<Track>> {
+    private val _historyFlow = callbackFlow {
         val listener =
             SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
                 if (key == TRACKS_LIST_KEY) {
@@ -40,39 +39,33 @@ class PreferenceProvider(context: Context) {
 
     init {
         if (preference.getBoolean(KEY_FIRST_LAUNCH, false)) {
-            preference.edit { putBoolean(KEY_DEFAULT_THEME, DEFAULT_THEME) }
+            preference.edit { putBoolean(IS_DARK_MODE, DEFAULT_DARK_MODE) }
             preference.edit { putBoolean(KEY_FIRST_LAUNCH, false) }
         }
     }
 
-
-
-    fun saveDefaultTheme(theme: Boolean) {
-        preference.edit { putBoolean(KEY_DEFAULT_THEME, theme) }
+    fun saveDefaultTheme(mode: Boolean) {
+        preference.edit { putBoolean(IS_DARK_MODE, mode) }
     }
 
     fun getDefaultTheme(): Boolean {
-        return preference.getBoolean(KEY_DEFAULT_THEME, DEFAULT_THEME) ?: DEFAULT_THEME
+        return preference.getBoolean(IS_DARK_MODE, DEFAULT_DARK_MODE)
     }
 
     private fun saveHistory(tracks: ArrayList<Track>) {
         val json = Gson().toJson(tracks)
-        preference.edit()
-            .putString(TRACKS_LIST_KEY, json)
-            .apply()
+        preference.edit {
+            putString(TRACKS_LIST_KEY, json)
+        }
     }
 
     fun saveTrack(track: Track) {
-        val history = arrayListOf<Track>()
-        history.addAll(getHistory())
-        if (history.contains(track)) {
-            history.remove(track)
-        }
-        history.add(0, track)
-        if (history.size > 10) {
-            history.removeLast()
-        }
-        saveHistory(history)
+        getHistory()
+            .filter { it != track }
+            .toMutableList()
+            .apply { add(0, track) }
+            .take(10)
+            .let { saveHistory(ArrayList(it)) }
     }
 
     fun clearHistory() {
@@ -81,8 +74,8 @@ class PreferenceProvider(context: Context) {
 
     companion object {
         private const val KEY_FIRST_LAUNCH = "first_launch"
-        private const val KEY_DEFAULT_THEME = "default_theme"
+        private const val IS_DARK_MODE = "default_mode"
         private const val TRACKS_LIST_KEY = "track_list"
-        private const val DEFAULT_THEME = false
+        private const val DEFAULT_DARK_MODE = false
     }
 }
