@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.fragments.SettingsFragment">
+
+    <ImageView
+        android:id="@+id/go_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimens_20_dp"
+        style="@style/IconTint"
+        android:src="@drawable/ic_round_arrow_back_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dimens_8_dp"
+        android:layout_marginTop="@dimen/dimens_12_dp"
+        android:text="@string/settings"
+        android:textColor="?attr/colorOnPrimary"
+        android:textSize="@dimen/dimens_22_sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/go_back"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/dark_theme_container"
+        android:layout_width="@dimen/dimens_0_dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimens_36_dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header">
+
+        <TextView
+            android:id="@+id/theme_text"
+            style="@style/SettingsScreenOptionText"
+            android:text="@string/black_theme" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dimens_12_dp"
+            android:layout_gravity="center|end"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/share_container"
+        android:layout_width="@dimen/dimens_0_dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dark_theme_container">
+
+        <TextView
+            android:id="@+id/share_text"
+            style="@style/SettingsScreenOptionText"
+            android:text="@string/share_app"
+           />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dimens_12_dp"
+            android:src="@drawable/ic_round_share_24"
+            android:layout_gravity="center|end"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/help_container"
+        android:layout_width="@dimen/dimens_0_dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/share_container">
+
+        <TextView
+            android:id="@+id/help_text"
+            style="@style/SettingsScreenOptionText"
+            android:text="@string/write_to_support"
+     />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_support_24"
+            android:layout_marginEnd="@dimen/dimens_12_dp"
+            android:layout_gravity="center|end"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/agreement_container"
+        android:layout_width="@dimen/dimens_0_dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/help_container">
+
+        <TextView
+            android:id="@+id/agreement_text"
+            style="@style/SettingsScreenOptionText"
+            android:text="@string/user_agreement" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dimens_12_dp"
+            android:src="@drawable/ic_arrow_forward_24"
+            android:layout_gravity="center|end"/>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
