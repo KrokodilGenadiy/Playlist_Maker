@@ -5,11 +5,38 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import com.google.gson.Gson
 import com.zaus_app.playlistmaker.data.Track
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 
 class PreferenceProvider(context: Context) {
     private val appContext = context.applicationContext
     private val preference: SharedPreferences =
         appContext.getSharedPreferences("settings", Context.MODE_PRIVATE)
+
+
+    private val _historyFlow = callbackFlow<List<Track>> {
+        val listener =
+            SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+                if (key == TRACKS_LIST_KEY) {
+                    trySend(getHistory()).isSuccess
+                }
+            }
+        preference.registerOnSharedPreferenceChangeListener(listener)
+        trySend(getHistory()).isSuccess
+        awaitClose { preference.unregisterOnSharedPreferenceChangeListener(listener) }
+    }.distinctUntilChanged()
+
+    val historyFlow: Flow<List<Track>> = _historyFlow
+
+    private fun getHistory(): List<Track> {
+        val json = preference.getString(TRACKS_LIST_KEY, null) ?: return emptyList()
+        return Gson().fromJson(json, Array<Track>::class.java).toList()
+    }
 
     init {
         if (preference.getBoolean(KEY_FIRST_LAUNCH, false)) {
@@ -18,17 +45,14 @@ class PreferenceProvider(context: Context) {
         }
     }
 
+
+
     fun saveDefaultTheme(theme: Boolean) {
         preference.edit { putBoolean(KEY_DEFAULT_THEME, theme) }
     }
 
     fun getDefaultTheme(): Boolean {
         return preference.getBoolean(KEY_DEFAULT_THEME, DEFAULT_THEME) ?: DEFAULT_THEME
-    }
-
-    fun getHistory(): Array<Track> {
-        val json = preference.getString(TRACKS_LIST_KEY, null) ?: return emptyArray()
-        return Gson().fromJson(json, Array<Track>::class.java)
     }
 
     private fun saveHistory(tracks: ArrayList<Track>) {
@@ -51,11 +75,8 @@ class PreferenceProvider(context: Context) {
         saveHistory(history)
     }
 
-    private fun clearHistory() {
-        preference
-            .edit()
-            .clear()
-            .apply()
+    fun clearHistory() {
+        saveHistory(ArrayList())
     }
 
     companion object {

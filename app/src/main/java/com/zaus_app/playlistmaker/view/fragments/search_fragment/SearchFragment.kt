@@ -56,25 +56,39 @@ class SearchFragment : Fragment() {
     }
 
     private fun setUpHistory() {
-/*        with(binding.searchHistory) {
-            trackRecycler.apply {
-                adapter = historyAdapter
-                layoutManager = LinearLayoutManager(requireContext())
-            }
-            var history = emptyList<Track>()
-            lifecycleScope.launch {
-                withContext(Dispatchers.IO) {
-                    history = viewModel.getHistory()
+        binding.apply {
+            viewLifecycleOwner.lifecycleScope.launch {
+                searchHistory.trackRecycler.apply {
+                    adapter = historyAdapter
+                    layoutManager = LinearLayoutManager(requireContext())
+                }
+                viewLifecycleOwner.lifecycleScope.launch {
+                    viewModel.historyList.collectLatest { history ->
+                        historyAdapter.submitList(history)
+                    }
                 }
             }
-            if (history.isNotEmpty()) {
-                historyAdapter.submitList(history)
+            clearHistory.setOnClickListener {
+                viewModel.clearHistory()
+                historyAdapter.submitList(null)
+                historyContainer.visibility = View.GONE
             }
-        }*/
+        }
+    }
+
+    private fun updateHistoryVisibility(history: List<Track>) {
+        binding.historyContainer.visibility = if (history.isNotEmpty()) View.VISIBLE else View.GONE
     }
 
     private fun initSearchView() {
         with(binding.searchView) {
+            setOnQueryTextFocusChangeListener() { _, hasFocus ->
+                if (hasFocus && query.isNullOrBlank()) {
+                    updateHistoryVisibility(historyAdapter.currentList)
+                } else {
+                    updateHistoryVisibility(emptyList())
+                }
+            }
             findViewById<ImageView>(androidx.appcompat.R.id.search_close_btn)
                 .setOnClickListener {
                     setQuery("", false)
@@ -88,15 +102,16 @@ class SearchFragment : Fragment() {
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     if (!query.isNullOrBlank())
                         search(query)
+                    binding.historyContainer.visibility = View.GONE
                     clearFocus()
                     return true
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-      /*              if (query.isNullOrBlank())
-                        binding.searchHistory.root.visibility = View.VISIBLE
+                    if (newText.isNullOrBlank() && trackAdapter.currentList.isEmpty())
+                        updateHistoryVisibility(historyAdapter.currentList)
                     else
-                        binding.searchHistory.root.visibility = View.GONE*/
+                        updateHistoryVisibility(emptyList())
                     return true
                 }
             })
@@ -117,7 +132,6 @@ class SearchFragment : Fragment() {
                         binding.nfPlaceholder.root.visibility = View.GONE
                         binding.ncPlaceholder.root.visibility = View.GONE
                         binding.refresh.visibility = View.GONE
-                        binding.searchHistory.root.visibility = View.GONE
                         trackAdapter.submitList(null)
                         binding.progressBar.visibility = View.VISIBLE
                     }
