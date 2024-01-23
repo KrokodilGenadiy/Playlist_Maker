@@ -16,20 +16,24 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.zaus_app.playlistmaker.data.Track
 import com.zaus_app.playlistmaker.data.base.ResultResponse
 import com.zaus_app.playlistmaker.databinding.FragmentSearchBinding
+import com.zaus_app.playlistmaker.view.MainActivity
 import com.zaus_app.playlistmaker.view.rv_adapter.TrackAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     private val viewModel: SearchViewModel by viewModels()
-    private val trackAdapter = TrackAdapter { track -> viewModel.saveTrack(track)}
-    private val historyAdapter = TrackAdapter { }
+    private val trackAdapter = TrackAdapter { track ->
+        viewModel.saveTrack(track)
+        (requireActivity() as MainActivity).launchPlayerFragment(track)
+    }
+    private val historyAdapter = TrackAdapter { track ->
+        (requireActivity() as MainActivity).launchPlayerFragment(track)
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
