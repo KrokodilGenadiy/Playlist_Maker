@@ -1,4 +1,4 @@
-package com.zaus_app.playlistmaker.view.fragments
+package com.zaus_app.playlistmaker.view.fragments.settings_fragment
 
 import android.content.Intent
 import android.net.Uri
@@ -8,13 +8,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import com.zaus_app.playlistmaker.App
 import com.zaus_app.playlistmaker.R
 import com.zaus_app.playlistmaker.databinding.FragmentSettingsBinding
+import com.zaus_app.playlistmaker.view.fragments.search_fragment.SearchViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class SettingsFragment : Fragment() {
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
+    private val viewModel: SettingsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,6 +44,10 @@ class SettingsFragment : Fragment() {
             agreementContainer.setOnClickListener {
                 openAgreement()
             }
+            themeSwitcher.setOnCheckedChangeListener { _, checked ->
+                App.instance.switchTheme(checked)
+            }
+            themeSwitcher.isChecked = viewModel.getThemeStatus()
         }
     }
 

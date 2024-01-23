@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.fragments.SettingsFragment">
+    tools:context=".view.fragments.settings_fragment.SettingsFragment">
 
     <ImageView
         android:id="@+id/go_back"
@@ -46,6 +46,7 @@
             android:text="@string/black_theme" />
 
         <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/theme_switcher"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/dimens_12_dp"

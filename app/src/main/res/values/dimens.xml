@@ -33,4 +33,7 @@
     <dimen name="dimens_23_dp">23dp</dimen>
     <dimen name="dimens_19_dp">19dp</dimen>
     <dimen name="dimens_14_sp">14sp</dimen>
+    <dimen name="dimens_6_dp">6dp</dimen>
+    <dimen name="dimens_32_dp">32dp</dimen>
+    <dimen name="dimens_50_dp">50dp</dimen>
 </resources>

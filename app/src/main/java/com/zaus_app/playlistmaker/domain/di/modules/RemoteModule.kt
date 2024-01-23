@@ -1,4 +1,4 @@
-package com.zaus_app.playlistmaker.domain.modules
+package com.zaus_app.playlistmaker.domain.di.modules
 
 import com.zaus_app.playlistmaker.data.api.ApiConstants
 import com.zaus_app.playlistmaker.data.api.TrackApi

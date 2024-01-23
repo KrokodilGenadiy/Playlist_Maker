@@ -8,23 +8,28 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.zaus_app.playlistmaker.data.Track
 import com.zaus_app.playlistmaker.data.base.ResultResponse
 import com.zaus_app.playlistmaker.databinding.FragmentSearchBinding
 import com.zaus_app.playlistmaker.view.rv_adapter.TrackAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
-    private val trackAdapter = TrackAdapter()
     private val viewModel: SearchViewModel by viewModels()
+    private val trackAdapter = TrackAdapter { track -> viewModel.saveTrack(track)}
+    private val historyAdapter = TrackAdapter { }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,9 +43,36 @@ class SearchFragment : Fragment() {
         binding.arrowBack.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
-        initSearchView()
         setUpAdapter()
+        setUpHistory()
+        initSearchView()
         enableRefresh()
+    }
+
+    private fun setUpHistory() {
+        binding.apply {
+            viewLifecycleOwner.lifecycleScope.launch {
+                searchHistory.trackRecycler.apply {
+                    adapter = historyAdapter
+                    layoutManager = LinearLayoutManager(requireContext())
+                }
+                viewLifecycleOwner.lifecycleScope.launch {
+                    viewModel.historyList.collectLatest { history ->
+                        historyAdapter.submitList(history)
+                    }
+                }
+            }
+            clearHistory.setOnClickListener {
+                viewModel.clearHistory()
+                historyAdapter.submitList(null)
+                historyContainer.visibility = View.GONE
+            }
+            updateHistoryVisibility(historyAdapter.currentList)
+        }
+    }
+
+    private fun updateHistoryVisibility(history: List<Track>) {
+        binding.historyContainer.isVisible = history.isNotEmpty() && binding.searchView.query.isNullOrBlank() && trackAdapter.currentList.isEmpty()
     }
 
     private fun initSearchView() {
@@ -50,6 +82,7 @@ class SearchFragment : Fragment() {
                     setQuery("", false)
                     clearFocus()
                     trackAdapter.submitList(null)
+                    updateHistoryVisibility(historyAdapter.currentList)
                     val inputMethodManager =
                         context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     inputMethodManager.hideSoftInputFromWindow(binding.searchView.windowToken, 0)
@@ -58,11 +91,13 @@ class SearchFragment : Fragment() {
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     if (!query.isNullOrBlank())
                         search(query)
+                    binding.historyContainer.visibility = View.GONE
                     clearFocus()
                     return true
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
+                    updateHistoryVisibility(historyAdapter.currentList)
                     return true
                 }
             })
@@ -74,6 +109,7 @@ class SearchFragment : Fragment() {
             search(binding.searchView.query.toString())
         }
     }
+
     private fun search(term: String) {
         lifecycleScope.launch {
             viewModel.search(term).collectLatest { result ->
@@ -85,6 +121,7 @@ class SearchFragment : Fragment() {
                         trackAdapter.submitList(null)
                         binding.progressBar.visibility = View.VISIBLE
                     }
+
                     is ResultResponse.Success -> {
                         val tracks = result.data.results
                         if (tracks.isNotEmpty()) {
@@ -95,6 +132,7 @@ class SearchFragment : Fragment() {
                             binding.nfPlaceholder.root.visibility = View.VISIBLE
                         }
                     }
+
                     is ResultResponse.Error -> {
                         val errorMessage = result.message
                         binding.progressBar.visibility = View.GONE
