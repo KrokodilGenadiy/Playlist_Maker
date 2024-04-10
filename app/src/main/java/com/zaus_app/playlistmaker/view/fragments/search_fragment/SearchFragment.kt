@@ -11,6 +11,10 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zaus_app.playlistmaker.data.Track
@@ -19,6 +23,8 @@ import com.zaus_app.playlistmaker.databinding.FragmentSearchBinding
 import com.zaus_app.playlistmaker.view.MainActivity
 import com.zaus_app.playlistmaker.view.rv_adapter.TrackAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -91,20 +97,18 @@ class SearchFragment : Fragment() {
                         context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     inputMethodManager.hideSoftInputFromWindow(binding.searchView.windowToken, 0)
                 }
-            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    if (!query.isNullOrBlank())
-                        search(query)
-                    binding.historyContainer.visibility = View.GONE
-                    clearFocus()
-                    return true
+            setOnQueryTextListener(
+                DebouncingQueryTextListener(
+                    this@SearchFragment.lifecycle
+                ) { newText ->
+                    newText?.let {
+                        if (!query.isNullOrBlank())
+                            search(query.toString())
+                        updateHistoryVisibility(historyAdapter.currentList)
+                        clearFocus()
+                    }
                 }
-
-                override fun onQueryTextChange(newText: String?): Boolean {
-                    updateHistoryVisibility(historyAdapter.currentList)
-                    return true
-                }
-            })
+            )
         }
     }
 
@@ -153,6 +157,32 @@ class SearchFragment : Fragment() {
         binding.trackRecycler.apply {
             adapter = trackAdapter
             layoutManager = LinearLayoutManager(requireContext())
+        }
+    }
+
+    inner class DebouncingQueryTextListener(
+        lifecycle: Lifecycle,
+        private val onDebouncingQueryTextChange: (String?) -> Unit
+    ) : SearchView.OnQueryTextListener {
+        private var debouncePeriod: Long = 2000
+
+        private val coroutineScope = lifecycle.coroutineScope
+
+        private var searchJob: Job? = null
+
+        override fun onQueryTextSubmit(query: String?): Boolean {
+            return false
+        }
+
+        override fun onQueryTextChange(newText: String?): Boolean {
+            searchJob?.cancel()
+            searchJob = coroutineScope.launch {
+                newText?.let {
+                    delay(debouncePeriod)
+                    onDebouncingQueryTextChange(newText)
+                }
+            }
+            return false
         }
     }
 
