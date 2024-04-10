@@ -5,8 +5,10 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.zaus_app.playlistmaker.App
 import com.zaus_app.playlistmaker.R
+import com.zaus_app.playlistmaker.data.Track
 import com.zaus_app.playlistmaker.domain.preferences.PreferenceProvider
 import com.zaus_app.playlistmaker.view.fragments.MainFragment
+import com.zaus_app.playlistmaker.view.fragments.PlayerFragment
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -42,6 +44,21 @@ class MainActivity : AppCompatActivity() {
             .addToBackStack(null)
             .commit()
     }
+
+    fun launchPlayerFragment(track: Track) {
+        val bundle = Bundle()
+        bundle.putParcelable("track", track)
+        val fragment = checkFragmentExistence("player") ?: PlayerFragment()
+        fragment.arguments = bundle
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_placeholder, fragment, "player")
+            .addToBackStack("player")
+            .commit()
+    }
+
+    private fun checkFragmentExistence(tag: String): Fragment? =
+        supportFragmentManager.findFragmentByTag(tag)
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)

@@ -12,7 +12,7 @@ import com.zaus_app.playlistmaker.databinding.TrackItemBinding
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class TrackAdapter(private val clickListener: OnItemClickListener) :
+class TrackAdapter(private val clickListener: OnItemClickListener)  :
     ListAdapter<Track, TrackAdapter.TrackViewHolder>(TrackDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
