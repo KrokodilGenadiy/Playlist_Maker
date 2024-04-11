@@ -82,7 +82,12 @@ class SearchFragment : Fragment() {
     }
 
     private fun updateHistoryVisibility(history: List<Track>) {
-        binding.historyContainer.isVisible = history.isNotEmpty() && binding.searchView.query.isNullOrBlank() && trackAdapter.currentList.isEmpty()
+        binding.historyContainer.isVisible = history.isNotEmpty() && binding.searchView.query.isNullOrBlank()
+        if (binding.historyContainer.isVisible) {
+            trackAdapter.submitList(null)
+            binding.nfPlaceholder.root.visibility = View.GONE
+            binding.ncPlaceholder.root.visibility = View.GONE
+        }
     }
 
     private fun initSearchView() {
@@ -160,14 +165,12 @@ class SearchFragment : Fragment() {
         }
     }
 
-    inner class DebouncingQueryTextListener(
+    internal class DebouncingQueryTextListener(
         lifecycle: Lifecycle,
         private val onDebouncingQueryTextChange: (String?) -> Unit
     ) : SearchView.OnQueryTextListener {
         private var debouncePeriod: Long = 2000
-
         private val coroutineScope = lifecycle.coroutineScope
-
         private var searchJob: Job? = null
 
         override fun onQueryTextSubmit(query: String?): Boolean {

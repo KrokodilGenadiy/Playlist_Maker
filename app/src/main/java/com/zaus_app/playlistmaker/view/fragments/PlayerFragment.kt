@@ -45,6 +45,8 @@ class PlayerFragment : Fragment() {
         preparePlayer(track)
         with(binding) {
             goBack.setOnClickListener {
+                mediaPlayer.release()
+                mainRunnable?.let { mainThreadHandler?.removeCallbacks(it) }
                 parentFragmentManager.popBackStack()
             }
             buttonPlayTrack.setOnClickListener {
@@ -66,7 +68,7 @@ class PlayerFragment : Fragment() {
             yearRelease.text = track.releaseDate.substring(0,4)
             genreName.text = track.primaryGenreName
             countryName.text = track.country
-            trackTimer.text = "00:00"
+            trackTimer.text = START_TIME
 
             Glide.with(root.context)
                 .load(track.artworkUrl100.replaceAfterLast('/',"512x512bb.jpg"))
@@ -77,14 +79,16 @@ class PlayerFragment : Fragment() {
     }
 
     private fun preparePlayer(track: Track) {
-        mediaPlayer.setDataSource(track.previewUrl)
-        mediaPlayer.prepareAsync()
-        mediaPlayer.setOnPreparedListener {
-            binding.buttonPlayTrack.isEnabled = true
-            playerState = STATE_PREPARED
-        }
-        mediaPlayer.setOnCompletionListener {
-            playerState = STATE_PREPARED
+        with(mediaPlayer) {
+            setDataSource(track.previewUrl)
+            prepareAsync()
+            setOnPreparedListener {
+                binding.buttonPlayTrack.isEnabled = true
+                playerState = STATE_PREPARED
+            }
+            setOnCompletionListener {
+                playerState = STATE_PREPARED
+            }
         }
     }
 
@@ -123,11 +127,14 @@ class PlayerFragment : Fragment() {
                 val elapsedTime = System.currentTimeMillis() - startTime
                 val remainingTime = duration - elapsedTime
                 if (remainingTime > 0) {
-                    binding.trackTimer.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition)
+                    if (_binding != null)
+                        binding.trackTimer.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition)
                     mainThreadHandler?.postDelayed(this, DELAY)
                 } else {
-                    binding.buttonPlayTrack.setImageDrawable(resources.getDrawable(R.drawable.play_track))
-                    binding.trackTimer.text = "00:00"
+                    if (_binding != null) {
+                        binding.buttonPlayTrack.setImageDrawable(resources.getDrawable(R.drawable.play_track))
+                        binding.trackTimer.text = "00:00"
+                    }
                 }
             }
         }
@@ -145,6 +152,7 @@ class PlayerFragment : Fragment() {
         private const val STATE_PAUSED = 3
         private const val DELAY = 300L
         private const val TRACK_TIME = 29500L
+        private const val START_TIME = "00:00"
     }
 
 
