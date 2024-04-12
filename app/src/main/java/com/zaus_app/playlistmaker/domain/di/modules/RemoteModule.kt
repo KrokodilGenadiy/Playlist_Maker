@@ -34,5 +34,5 @@ object RemoteModule {
 
     @Provides
     @Singleton
-    fun provideFoodApi(retrofit: Retrofit): TrackApi = retrofit.create(TrackApi::class.java)
+    fun provideTrackApi(retrofit: Retrofit): TrackApi = retrofit.create(TrackApi::class.java)
 }

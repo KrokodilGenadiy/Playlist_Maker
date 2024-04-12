@@ -1,4 +1,4 @@
-package com.zaus_app.playlistmaker.data
+package com.zaus_app.playlistmaker.data.entities
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

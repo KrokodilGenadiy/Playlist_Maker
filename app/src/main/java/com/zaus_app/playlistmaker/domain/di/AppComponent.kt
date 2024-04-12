@@ -5,8 +5,8 @@ import android.app.Application
 import android.content.Context
 import com.zaus_app.playlistmaker.domain.di.modules.DomainModule
 import com.zaus_app.playlistmaker.domain.di.modules.RemoteModule
-import com.zaus_app.playlistmaker.view.fragments.search_fragment.SearchViewModel
-import com.zaus_app.playlistmaker.view.fragments.settings_fragment.SettingsViewModel
+import com.zaus_app.playlistmaker.presentation.fragments.search_fragment.SearchViewModel
+import com.zaus_app.playlistmaker.presentation.fragments.settings_fragment.SettingsViewModel
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton

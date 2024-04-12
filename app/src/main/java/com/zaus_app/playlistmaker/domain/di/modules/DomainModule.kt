@@ -3,10 +3,11 @@ package com.zaus_app.playlistmaker.domain.di.modules
 import android.content.Context
 import com.zaus_app.playlistmaker.data.api.TrackApi
 import com.zaus_app.playlistmaker.domain.preferences.PreferenceProvider
-import com.zaus_app.playlistmaker.domain.repositroies.RemoteRepository
-import com.zaus_app.playlistmaker.domain.repositroies.implementation.RemoteRepositoryImpl
+import com.zaus_app.playlistmaker.data.implementations.PreferenceProviderImpl
+import com.zaus_app.playlistmaker.domain.repositrories.RemoteRepository
+import com.zaus_app.playlistmaker.data.implementations.RemoteRepositoryImpl
 import com.zaus_app.playlistmaker.domain.usecase.RemoteUseCase
-import com.zaus_app.playlistmaker.domain.usecase.implementation.RemoteUseCaseImpl
+import com.zaus_app.playlistmaker.data.implementations.RemoteUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,6 +28,6 @@ object DomainModule {
 
     @Singleton
     @Provides
-    fun providePreferences(@ApplicationContext appContext: Context) = PreferenceProvider(appContext)
+    fun providePreferences(@ApplicationContext appContext: Context): PreferenceProvider = PreferenceProviderImpl(appContext)
 
 }

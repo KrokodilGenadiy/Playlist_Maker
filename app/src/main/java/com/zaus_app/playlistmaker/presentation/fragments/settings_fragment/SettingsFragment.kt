@@ -1,4 +1,4 @@
-package com.zaus_app.playlistmaker.view.fragments.settings_fragment
+package com.zaus_app.playlistmaker.presentation.fragments.settings_fragment
 
 import android.content.Intent
 import android.net.Uri
@@ -12,7 +12,6 @@ import androidx.fragment.app.viewModels
 import com.zaus_app.playlistmaker.App
 import com.zaus_app.playlistmaker.R
 import com.zaus_app.playlistmaker.databinding.FragmentSettingsBinding
-import com.zaus_app.playlistmaker.view.fragments.search_fragment.SearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

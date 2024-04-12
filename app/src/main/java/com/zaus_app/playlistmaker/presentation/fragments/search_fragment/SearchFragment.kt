@@ -1,4 +1,4 @@
-package com.zaus_app.playlistmaker.view.fragments.search_fragment
+package com.zaus_app.playlistmaker.presentation.fragments.search_fragment
 
 import android.content.Context
 import android.os.Bundle
@@ -14,14 +14,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.coroutineScope
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.zaus_app.playlistmaker.data.Track
+import com.zaus_app.playlistmaker.data.entities.Track
 import com.zaus_app.playlistmaker.data.base.ResultResponse
 import com.zaus_app.playlistmaker.databinding.FragmentSearchBinding
-import com.zaus_app.playlistmaker.view.MainActivity
-import com.zaus_app.playlistmaker.view.rv_adapter.TrackAdapter
+import com.zaus_app.playlistmaker.presentation.MainActivity
+import com.zaus_app.playlistmaker.presentation.rv_adapter.TrackAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay

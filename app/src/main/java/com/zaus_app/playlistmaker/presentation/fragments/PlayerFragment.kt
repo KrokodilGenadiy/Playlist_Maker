@@ -1,4 +1,4 @@
-package com.zaus_app.playlistmaker.view.fragments
+package com.zaus_app.playlistmaker.presentation.fragments
 
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -8,13 +8,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.zaus_app.playlistmaker.R
-import com.zaus_app.playlistmaker.data.Track
+import com.zaus_app.playlistmaker.data.entities.Track
 import com.zaus_app.playlistmaker.databinding.FragmentPlayerBinding
-import com.zaus_app.playlistmaker.databinding.FragmentSettingsBinding
-import com.zaus_app.playlistmaker.view.fragments.settings_fragment.SettingsViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 
