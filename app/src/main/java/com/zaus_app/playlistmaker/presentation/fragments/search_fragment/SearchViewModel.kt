@@ -1,7 +1,7 @@
 package com.zaus_app.playlistmaker.presentation.fragments.search_fragment
 
 import androidx.lifecycle.ViewModel
-import com.zaus_app.playlistmaker.data.entities.Track
+import com.zaus_app.playlistmaker.domain.entities.Track
 import com.zaus_app.playlistmaker.domain.preferences.PreferenceProvider
 import com.zaus_app.playlistmaker.data.implementations.PreferenceProviderImpl
 import com.zaus_app.playlistmaker.domain.usecase.RemoteUseCase

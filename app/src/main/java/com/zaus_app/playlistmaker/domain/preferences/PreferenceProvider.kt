@@ -1,6 +1,6 @@
 package com.zaus_app.playlistmaker.domain.preferences
 
-import com.zaus_app.playlistmaker.data.entities.Track
+import com.zaus_app.playlistmaker.domain.entities.Track
 
 interface PreferenceProvider {
     fun getHistory(): List<Track>

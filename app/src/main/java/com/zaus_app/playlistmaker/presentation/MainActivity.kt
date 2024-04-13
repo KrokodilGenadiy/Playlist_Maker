@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.zaus_app.playlistmaker.App
 import com.zaus_app.playlistmaker.R
-import com.zaus_app.playlistmaker.data.entities.Track
+import com.zaus_app.playlistmaker.domain.entities.Track
 import com.zaus_app.playlistmaker.domain.preferences.PreferenceProvider
 import com.zaus_app.playlistmaker.presentation.fragments.MainFragment
 import com.zaus_app.playlistmaker.presentation.fragments.PlayerFragment

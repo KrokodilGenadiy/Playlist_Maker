@@ -7,7 +7,7 @@ import com.zaus_app.playlistmaker.data.implementations.PreferenceProviderImpl
 import com.zaus_app.playlistmaker.domain.repositrories.RemoteRepository
 import com.zaus_app.playlistmaker.data.implementations.RemoteRepositoryImpl
 import com.zaus_app.playlistmaker.domain.usecase.RemoteUseCase
-import com.zaus_app.playlistmaker.data.implementations.RemoteUseCaseImpl
+import com.zaus_app.playlistmaker.domain.usecase.implementations.RemoteUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

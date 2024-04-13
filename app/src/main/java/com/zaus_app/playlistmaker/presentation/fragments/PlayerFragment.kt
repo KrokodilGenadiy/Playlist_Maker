@@ -10,7 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.zaus_app.playlistmaker.R
-import com.zaus_app.playlistmaker.data.entities.Track
+import com.zaus_app.playlistmaker.domain.entities.Track
 import com.zaus_app.playlistmaker.databinding.FragmentPlayerBinding
 import java.text.SimpleDateFormat
 import java.util.Locale

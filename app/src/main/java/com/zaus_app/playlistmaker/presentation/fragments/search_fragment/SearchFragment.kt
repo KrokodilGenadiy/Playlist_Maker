@@ -15,7 +15,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.zaus_app.playlistmaker.data.entities.Track
+import com.zaus_app.playlistmaker.domain.entities.Track
 import com.zaus_app.playlistmaker.data.base.ResultResponse
 import com.zaus_app.playlistmaker.databinding.FragmentSearchBinding
 import com.zaus_app.playlistmaker.presentation.MainActivity
