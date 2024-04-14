@@ -17,6 +17,7 @@ class PlayerViewModel: ViewModel() {
         mediaPlayer.start()
         val startTime = System.currentTimeMillis()
 
+
         mainThreadHandler?.post(
             op(startTime, TRACK_TIME)
         )
