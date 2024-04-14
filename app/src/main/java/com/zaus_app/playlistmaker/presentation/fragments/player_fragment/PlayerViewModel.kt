@@ -20,6 +20,7 @@ class PlayerViewModel: ViewModel() {
 
         mainThreadHandler?.post(
             op(startTime, TRACK_TIME)
+
         )
         playerState = STATE_PLAYING
     }
