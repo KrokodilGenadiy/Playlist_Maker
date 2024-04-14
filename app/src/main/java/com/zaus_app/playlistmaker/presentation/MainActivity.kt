@@ -8,7 +8,7 @@ import com.zaus_app.playlistmaker.R
 import com.zaus_app.playlistmaker.domain.entities.Track
 import com.zaus_app.playlistmaker.domain.preferences.PreferenceProvider
 import com.zaus_app.playlistmaker.presentation.fragments.MainFragment
-import com.zaus_app.playlistmaker.presentation.fragments.PlayerFragment
+import com.zaus_app.playlistmaker.presentation.fragments.player_fragment.PlayerFragment
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
