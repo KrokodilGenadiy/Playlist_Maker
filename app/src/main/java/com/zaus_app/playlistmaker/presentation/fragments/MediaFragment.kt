@@ -1,14 +1,11 @@
-package com.zaus_app.playlistmaker.view.fragments
+package com.zaus_app.playlistmaker.presentation.fragments
 
-import android.media.MediaPlayer
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.zaus_app.playlistmaker.R
 import com.zaus_app.playlistmaker.databinding.FragmentMediaBinding
-import com.zaus_app.playlistmaker.databinding.FragmentSearchBinding
 
 
 class MediaFragment : Fragment() {

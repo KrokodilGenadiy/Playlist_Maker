@@ -1,4 +1,4 @@
-package com.zaus_app.playlistmaker.view.fragments
+package com.zaus_app.playlistmaker.presentation.fragments.player_fragment
 
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -11,23 +11,20 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.zaus_app.playlistmaker.R
-import com.zaus_app.playlistmaker.data.Track
+import com.zaus_app.playlistmaker.domain.entities.Track
 import com.zaus_app.playlistmaker.databinding.FragmentPlayerBinding
-import com.zaus_app.playlistmaker.databinding.FragmentSettingsBinding
-import com.zaus_app.playlistmaker.view.fragments.settings_fragment.SettingsViewModel
+import com.zaus_app.playlistmaker.presentation.fragments.search_fragment.SearchViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-
+@AndroidEntryPoint
 class PlayerFragment : Fragment() {
     private var _binding: FragmentPlayerBinding? = null
     private val binding get() = _binding!!
+    private val viewModel: PlayerViewModel by viewModels()
 
-    private var playerState = STATE_DEFAULT
-    private var mediaPlayer = MediaPlayer()
 
-    private var mainThreadHandler: Handler? = null
-    private var mainRunnable: Runnable? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,14 +36,14 @@ class PlayerFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mainThreadHandler = Handler(Looper.getMainLooper())
+        viewModel.mainThreadHandler = Handler(Looper.getMainLooper())
         val track = arguments?.get("track") as Track
         setTrackDetails(track)
         preparePlayer(track)
         with(binding) {
             goBack.setOnClickListener {
-                mediaPlayer.release()
-                mainRunnable?.let { mainThreadHandler?.removeCallbacks(it) }
+                viewModel.mediaPlayer.release()
+                viewModel.mainRunnable?.let { viewModel.mainThreadHandler?.removeCallbacks(it) }
                 parentFragmentManager.popBackStack()
             }
             buttonPlayTrack.setOnClickListener {
@@ -57,7 +54,7 @@ class PlayerFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        pausePlayer()
+        viewModel.pausePlayer()
     }
     private fun setTrackDetails(track: Track) {
         with(binding) {
@@ -79,44 +76,29 @@ class PlayerFragment : Fragment() {
     }
 
     private fun preparePlayer(track: Track) {
-        with(mediaPlayer) {
+        with(viewModel.mediaPlayer) {
             setDataSource(track.previewUrl)
             prepareAsync()
             setOnPreparedListener {
-                binding.buttonPlayTrack.isEnabled = true
-                playerState = STATE_PREPARED
+                viewModel.playerState = STATE_PREPARED
             }
             setOnCompletionListener {
-                playerState = STATE_PREPARED
+                viewModel.playerState = STATE_PREPARED
             }
         }
     }
 
-    private fun startPlayer() {
-        mediaPlayer.start()
-        val startTime = System.currentTimeMillis()
 
-        mainThreadHandler?.post(
-            createUpdateTimerTask(startTime, TRACK_TIME)
-        )
-        playerState = STATE_PLAYING
-    }
-
-    private fun pausePlayer() {
-        mediaPlayer.pause()
-        mainRunnable?.let { mainThreadHandler?.removeCallbacks(it) }
-        playerState = STATE_PAUSED
-    }
 
     private fun playbackControl() {
-        when(playerState) {
+        when(viewModel.playerState) {
             STATE_PLAYING -> {
                 binding.buttonPlayTrack.setImageDrawable(resources.getDrawable(R.drawable.play_track))
-                pausePlayer()
+                viewModel.pausePlayer()
             }
             STATE_PREPARED, STATE_PAUSED -> {
                 binding.buttonPlayTrack.setImageDrawable(resources.getDrawable(R.drawable.pause_button))
-                startPlayer()
+                viewModel.startPlayer(::createUpdateTimerTask)
             }
         }
     }
@@ -128,8 +110,8 @@ class PlayerFragment : Fragment() {
                 val remainingTime = duration - elapsedTime
                 if (remainingTime > 0) {
                     if (_binding != null)
-                        binding.trackTimer.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition)
-                    mainThreadHandler?.postDelayed(this, DELAY)
+                        binding.trackTimer.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(viewModel.mediaPlayer.currentPosition)
+                    viewModel.mainThreadHandler?.postDelayed(this, DELAY)
                 } else {
                     if (_binding != null) {
                         binding.buttonPlayTrack.setImageDrawable(resources.getDrawable(R.drawable.play_track))
@@ -143,8 +125,9 @@ class PlayerFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
-        mediaPlayer.release()
+        viewModel.mediaPlayer.release()
     }
+
     companion object {
         private const val STATE_DEFAULT = 0
         private const val STATE_PREPARED = 1
@@ -154,6 +137,5 @@ class PlayerFragment : Fragment() {
         private const val TRACK_TIME = 29500L
         private const val START_TIME = "00:00"
     }
-
 
 }

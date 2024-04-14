@@ -9,7 +9,7 @@ import javax.inject.Inject
 @HiltAndroidApp
 class App : Application() {
     @Inject
-    lateinit var preferenceProvider: PreferenceProvider
+    lateinit var preferenceProviderImpl: PreferenceProvider
     override fun onCreate() {
         super.onCreate()
         instance = this
@@ -18,10 +18,10 @@ class App : Application() {
     fun switchTheme(darkThemeEnabled: Boolean) {
         AppCompatDelegate.setDefaultNightMode(
             if (darkThemeEnabled) {
-                preferenceProvider.saveDefaultTheme(darkThemeEnabled)
+                preferenceProviderImpl.saveDefaultTheme(darkThemeEnabled)
                 AppCompatDelegate.MODE_NIGHT_YES
             } else {
-                preferenceProvider.saveDefaultTheme(darkThemeEnabled)
+                preferenceProviderImpl.saveDefaultTheme(darkThemeEnabled)
                 AppCompatDelegate.MODE_NIGHT_NO
             }
         )

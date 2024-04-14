@@ -1,4 +1,4 @@
-package com.zaus_app.playlistmaker.view.fragments
+package com.zaus_app.playlistmaker.presentation.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.zaus_app.playlistmaker.databinding.FragmentMainBinding
-import com.zaus_app.playlistmaker.view.MainActivity
-import com.zaus_app.playlistmaker.view.fragments.search_fragment.SearchFragment
-import com.zaus_app.playlistmaker.view.fragments.settings_fragment.SettingsFragment
+import com.zaus_app.playlistmaker.presentation.MainActivity
+import com.zaus_app.playlistmaker.presentation.fragments.search_fragment.SearchFragment
+import com.zaus_app.playlistmaker.presentation.fragments.settings_fragment.SettingsFragment
 
 
 class MainFragment : Fragment() {

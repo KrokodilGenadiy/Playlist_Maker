@@ -1,9 +1,9 @@
-package com.zaus_app.playlistmaker.domain.repositroies.implementation
+package com.zaus_app.playlistmaker.data.implementations
 
 import com.zaus_app.playlistmaker.data.api.TrackApi
 import com.zaus_app.playlistmaker.data.api.responses.SearchResponse
 import com.zaus_app.playlistmaker.data.base.ResultResponse
-import com.zaus_app.playlistmaker.domain.repositroies.RemoteRepository
+import com.zaus_app.playlistmaker.domain.repositrories.RemoteRepository
 import retrofit2.Response
 
 class RemoteRepositoryImpl(private val retrofitService: TrackApi): RemoteRepository {
