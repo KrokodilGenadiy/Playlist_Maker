@@ -3,10 +3,13 @@ package com.zaus_app.playlistmaker.presentation.fragments.player_fragment
 import android.media.MediaPlayer
 import android.os.Handler
 import androidx.lifecycle.ViewModel
-
+import com.zaus_app.playlistmaker.domain.entities.Track
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 
 
 class PlayerViewModel: ViewModel() {
+    var track: Flow<Track> = emptyFlow()
     var mediaPlayer = MediaPlayer()
     var playerState = STATE_DEFAULT
 

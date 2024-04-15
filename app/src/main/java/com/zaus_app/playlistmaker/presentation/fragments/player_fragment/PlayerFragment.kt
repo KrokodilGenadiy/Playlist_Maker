@@ -9,12 +9,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.zaus_app.playlistmaker.R
 import com.zaus_app.playlistmaker.domain.entities.Track
 import com.zaus_app.playlistmaker.databinding.FragmentPlayerBinding
 import com.zaus_app.playlistmaker.presentation.fragments.search_fragment.SearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -22,15 +27,14 @@ import java.util.Locale
 class PlayerFragment : Fragment() {
     private var _binding: FragmentPlayerBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: PlayerViewModel by viewModels()
-
-
+    private lateinit var viewModel: PlayerViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentPlayerBinding.inflate(inflater, container, false)
+        viewModel = ViewModelProvider(this)[PlayerViewModel::class.java]
         return binding.root
     }
 
@@ -38,7 +42,8 @@ class PlayerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.mainThreadHandler = Handler(Looper.getMainLooper())
         val track = arguments?.get("track") as Track
-        setTrackDetails(track)
+        viewModel.track = flowOf(track)
+        setTrackDetails()
         preparePlayer(track)
         with(binding) {
             goBack.setOnClickListener {
@@ -51,27 +56,25 @@ class PlayerFragment : Fragment() {
             }
         }
     }
-
-    override fun onPause() {
-        super.onPause()
-        viewModel.pausePlayer()
-    }
-    private fun setTrackDetails(track: Track) {
-        with(binding) {
-            durationTime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
-            trackName.text = track.trackName
-            artistName.text= track.artistName
-            albumName.text = track.collectionName
-            yearRelease.text = track.releaseDate.substring(0,4)
-            genreName.text = track.primaryGenreName
-            countryName.text = track.country
-            trackTimer.text = START_TIME
-
-            Glide.with(root.context)
-                .load(track.artworkUrl100.replaceAfterLast('/',"512x512bb.jpg"))
-                .centerCrop()
-                .placeholder(R.drawable.placeholder)
-                .into(trackCover)
+    private fun setTrackDetails() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.track.collectLatest {
+                with(binding) {
+                    durationTime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(it.trackTimeMillis)
+                    trackName.text = it.trackName
+                    artistName.text= it.artistName
+                    albumName.text = it.collectionName
+                    yearRelease.text = it.releaseDate.substring(0,4)
+                    genreName.text = it.primaryGenreName
+                    countryName.text = it.country
+                    trackTimer.text = START_TIME
+                    Glide.with(root.context)
+                        .load(it.artworkUrl100.replaceAfterLast('/',"512x512bb.jpg"))
+                        .centerCrop()
+                        .placeholder(R.drawable.placeholder)
+                        .into(trackCover)
+                }
+            }
         }
     }
 

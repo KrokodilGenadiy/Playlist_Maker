@@ -14,7 +14,7 @@
     <string name="body">Спасибо разработчикам и разработчицам за крутое приложение!</string>
     <string name="message_type">message/rfc822</string>
     <string name="title">Send email</string>
-    <string name="course_url">https://praktikum.yandex.ru/android/</string>
+    <string name="course_url">https://practicum.yandex.ru/profile/android-developer/</string>
     <string name="agreement_url">https://yandex.ru/legal/practicum_offer/</string>
     <string name="error_text">No email client found</string>
     <string name="text_type">text/plain</string>
