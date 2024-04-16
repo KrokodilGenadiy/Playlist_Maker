@@ -6,18 +6,15 @@ import androidx.fragment.app.Fragment
 import com.zaus_app.playlistmaker.App
 import com.zaus_app.playlistmaker.R
 import com.zaus_app.playlistmaker.domain.entities.Track
-import com.zaus_app.playlistmaker.domain.preferences.PreferenceProvider
 import com.zaus_app.playlistmaker.presentation.fragments.MainFragment
 import com.zaus_app.playlistmaker.presentation.fragments.player_fragment.PlayerFragment
-import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity() {
-    private val preferenceProviderImpl: PreferenceProvider by inject()
     private var currentFragmentTag: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        App.instance.switchTheme(preferenceProviderImpl.getDefaultTheme())
+        App.instance.switchTheme()
         if (savedInstanceState == null) {
             launchFragment(MainFragment(), "Main")
         } else {

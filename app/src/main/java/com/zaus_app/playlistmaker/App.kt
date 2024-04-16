@@ -23,13 +23,14 @@ class App : Application() {
         }
     }
 
-    fun switchTheme(darkThemeEnabled: Boolean) {
+    fun switchTheme(theme: Boolean? = null) {
+        val defaultTheme = theme ?: preferenceProvider.getDefaultTheme()
         AppCompatDelegate.setDefaultNightMode(
-            if (darkThemeEnabled) {
-                preferenceProvider.saveDefaultTheme(darkThemeEnabled)
+            if (defaultTheme) {
+                preferenceProvider.saveDefaultTheme(defaultTheme)
                 AppCompatDelegate.MODE_NIGHT_YES
             } else {
-                preferenceProvider.saveDefaultTheme(darkThemeEnabled)
+                preferenceProvider.saveDefaultTheme(defaultTheme)
                 AppCompatDelegate.MODE_NIGHT_NO
             }
         )
