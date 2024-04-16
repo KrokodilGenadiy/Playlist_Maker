@@ -12,6 +12,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,7 +31,7 @@ import kotlinx.coroutines.launch
 class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: SearchViewModel by viewModels()
+    private lateinit var viewModel: SearchViewModel
     private val trackAdapter = TrackAdapter { track ->
         viewModel.saveTrack(track)
         (requireActivity() as MainActivity).launchPlayerFragment(track)
@@ -43,6 +44,7 @@ class SearchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        viewModel = ViewModelProvider(this)[SearchViewModel::class.java]
         return binding.root
     }
 
