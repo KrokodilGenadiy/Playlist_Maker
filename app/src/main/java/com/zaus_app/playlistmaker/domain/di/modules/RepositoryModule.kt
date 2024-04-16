@@ -2,14 +2,16 @@ package com.zaus_app.playlistmaker.domain.di.modules
 
 import android.content.Context
 import com.zaus_app.playlistmaker.data.implementations.PreferenceProviderImpl
+import com.zaus_app.playlistmaker.data.implementations.RemoteRepositoryImpl
 import com.zaus_app.playlistmaker.domain.preferences.PreferenceProvider
-import org.koin.android.ext.koin.androidContext
+import com.zaus_app.playlistmaker.domain.repositrories.RemoteRepository
+
 import org.koin.dsl.module
 
-val domainModule = module {
+val repositoryModule = module {
 
-    single<PreferenceProvider> {
-        PreferenceProviderImpl(get())
+    single<RemoteRepository> {
+        RemoteRepositoryImpl(get())
     }
 
 }

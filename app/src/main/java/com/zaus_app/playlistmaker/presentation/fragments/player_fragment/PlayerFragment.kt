@@ -1,6 +1,5 @@
 package com.zaus_app.playlistmaker.presentation.fragments.player_fragment
 
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -8,33 +7,28 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.bumptech.glide.Glide
 import com.zaus_app.playlistmaker.R
 import com.zaus_app.playlistmaker.domain.entities.Track
 import com.zaus_app.playlistmaker.databinding.FragmentPlayerBinding
-import com.zaus_app.playlistmaker.presentation.fragments.search_fragment.SearchViewModel
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-@AndroidEntryPoint
 class PlayerFragment : Fragment() {
     private var _binding: FragmentPlayerBinding? = null
     private val binding get() = _binding!!
-    private lateinit var viewModel: PlayerViewModel
+    private val viewModel: PlayerViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentPlayerBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(this)[PlayerViewModel::class.java]
         return binding.root
     }
 

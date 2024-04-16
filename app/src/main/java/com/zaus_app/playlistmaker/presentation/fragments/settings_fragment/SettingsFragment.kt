@@ -13,20 +13,19 @@ import androidx.lifecycle.ViewModelProvider
 import com.zaus_app.playlistmaker.App
 import com.zaus_app.playlistmaker.R
 import com.zaus_app.playlistmaker.databinding.FragmentSettingsBinding
-import dagger.hilt.android.AndroidEntryPoint
+import com.zaus_app.playlistmaker.presentation.fragments.search_fragment.SearchViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-@AndroidEntryPoint
 class SettingsFragment : Fragment() {
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
-    private lateinit var viewModel: SettingsViewModel
+    private val viewModel: SettingsViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(this)[SettingsViewModel::class.java]
         return binding.root
     }
 

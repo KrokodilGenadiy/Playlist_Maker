@@ -21,17 +21,16 @@ import com.zaus_app.playlistmaker.data.base.ResultResponse
 import com.zaus_app.playlistmaker.databinding.FragmentSearchBinding
 import com.zaus_app.playlistmaker.presentation.MainActivity
 import com.zaus_app.playlistmaker.presentation.rv_adapter.TrackAdapter
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-@AndroidEntryPoint
 class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
-    private lateinit var viewModel: SearchViewModel
+    private val viewModel: SearchViewModel by viewModel()
     private val trackAdapter = TrackAdapter { track ->
         viewModel.saveTrack(track)
         (requireActivity() as MainActivity).launchPlayerFragment(track)
@@ -44,7 +43,6 @@ class SearchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(this)[SearchViewModel::class.java]
         return binding.root
     }
 

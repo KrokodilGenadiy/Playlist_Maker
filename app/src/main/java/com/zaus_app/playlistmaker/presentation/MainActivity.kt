@@ -9,13 +9,10 @@ import com.zaus_app.playlistmaker.domain.entities.Track
 import com.zaus_app.playlistmaker.domain.preferences.PreferenceProvider
 import com.zaus_app.playlistmaker.presentation.fragments.MainFragment
 import com.zaus_app.playlistmaker.presentation.fragments.player_fragment.PlayerFragment
-import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
 
-@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    @Inject
-    lateinit var preferenceProviderImpl: PreferenceProvider
+    private val preferenceProviderImpl: PreferenceProvider by inject()
     private var currentFragmentTag: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
