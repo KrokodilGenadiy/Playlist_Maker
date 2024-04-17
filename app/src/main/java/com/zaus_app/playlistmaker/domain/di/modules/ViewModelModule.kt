@@ -10,7 +10,7 @@ import org.koin.dsl.module
 
 val viewModelModule = module {
     viewModel<PlayerViewModel> {
-        PlayerViewModel()
+        PlayerViewModel(get())
     }
 
     viewModel<SearchViewModel> {

@@ -16,6 +16,8 @@ import com.zaus_app.playlistmaker.databinding.FragmentPlayerBinding
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
+import java.lang.Exception
+import java.lang.IllegalStateException
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -107,7 +109,11 @@ class PlayerFragment : Fragment() {
                 val remainingTime = duration - elapsedTime
                 if (remainingTime > 0) {
                     if (_binding != null)
-                        binding.trackTimer.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(viewModel.mediaPlayer.currentPosition)
+                        try {
+                            binding.trackTimer.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(viewModel.mediaPlayer.currentPosition)
+                        } catch (_: Exception) {
+                        }
+
                     viewModel.mainThreadHandler?.postDelayed(this, DELAY)
                 } else {
                     if (_binding != null) {
