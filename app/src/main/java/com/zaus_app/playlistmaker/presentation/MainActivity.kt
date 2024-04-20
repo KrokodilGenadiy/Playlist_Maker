@@ -3,24 +3,19 @@ package com.zaus_app.playlistmaker.presentation
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.replace
 import com.zaus_app.playlistmaker.App
 import com.zaus_app.playlistmaker.R
 import com.zaus_app.playlistmaker.domain.entities.Track
-import com.zaus_app.playlistmaker.domain.preferences.PreferenceProvider
 import com.zaus_app.playlistmaker.presentation.fragments.MainFragment
 import com.zaus_app.playlistmaker.presentation.fragments.player_fragment.PlayerFragment
-import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
-@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    @Inject
-    lateinit var preferenceProviderImpl: PreferenceProvider
     private var currentFragmentTag: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        App.instance.switchTheme(preferenceProviderImpl.getDefaultTheme())
+        App.instance.switchTheme()
         if (savedInstanceState == null) {
             launchFragment(MainFragment(), "Main")
         } else {

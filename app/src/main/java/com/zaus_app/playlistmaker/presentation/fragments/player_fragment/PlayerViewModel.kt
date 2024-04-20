@@ -8,9 +8,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 
 
-class PlayerViewModel: ViewModel() {
+class PlayerViewModel( var mediaPlayer: MediaPlayer): ViewModel() {
     var track: Flow<Track> = emptyFlow()
-    var mediaPlayer = MediaPlayer()
     var playerState = STATE_DEFAULT
 
     var mainThreadHandler: Handler? = null
@@ -19,11 +18,8 @@ class PlayerViewModel: ViewModel() {
     fun startPlayer(op: (Long,Long) -> Runnable) {
         mediaPlayer.start()
         val startTime = System.currentTimeMillis()
-
-
         mainThreadHandler?.post(
             op(startTime, TRACK_TIME)
-
         )
         playerState = STATE_PLAYING
     }

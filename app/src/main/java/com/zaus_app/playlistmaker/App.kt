@@ -2,26 +2,35 @@ package com.zaus_app.playlistmaker
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
+import com.zaus_app.playlistmaker.domain.di.modules.domainModule
+import com.zaus_app.playlistmaker.domain.di.modules.remoteModule
+import com.zaus_app.playlistmaker.domain.di.modules.repositoryModule
+import com.zaus_app.playlistmaker.domain.di.modules.useCaseModule
+import com.zaus_app.playlistmaker.domain.di.modules.viewModelModule
 import com.zaus_app.playlistmaker.domain.preferences.PreferenceProvider
-import dagger.hilt.android.HiltAndroidApp
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.GlobalContext.startKoin
 
-@HiltAndroidApp
 class App : Application() {
-    @Inject
-    lateinit var preferenceProviderImpl: PreferenceProvider
+    private val preferenceProvider: PreferenceProvider by inject()
     override fun onCreate() {
         super.onCreate()
         instance = this
+        startKoin {
+            androidContext(this@App)
+            modules(domainModule, repositoryModule, useCaseModule, remoteModule, viewModelModule)
+        }
     }
 
-    fun switchTheme(darkThemeEnabled: Boolean) {
+    fun switchTheme(theme: Boolean? = null) {
+        val defaultTheme = theme ?: preferenceProvider.getDefaultTheme()
         AppCompatDelegate.setDefaultNightMode(
-            if (darkThemeEnabled) {
-                preferenceProviderImpl.saveDefaultTheme(darkThemeEnabled)
+            if (defaultTheme) {
+                preferenceProvider.saveDefaultTheme(defaultTheme)
                 AppCompatDelegate.MODE_NIGHT_YES
             } else {
-                preferenceProviderImpl.saveDefaultTheme(darkThemeEnabled)
+                preferenceProvider.saveDefaultTheme(defaultTheme)
                 AppCompatDelegate.MODE_NIGHT_NO
             }
         )

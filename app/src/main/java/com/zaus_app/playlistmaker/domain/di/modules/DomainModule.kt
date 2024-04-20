@@ -1,33 +1,18 @@
 package com.zaus_app.playlistmaker.domain.di.modules
 
-import android.content.Context
-import com.zaus_app.playlistmaker.data.api.TrackApi
-import com.zaus_app.playlistmaker.domain.preferences.PreferenceProvider
+import android.media.MediaPlayer
 import com.zaus_app.playlistmaker.data.implementations.PreferenceProviderImpl
-import com.zaus_app.playlistmaker.domain.repositrories.RemoteRepository
-import com.zaus_app.playlistmaker.data.implementations.RemoteRepositoryImpl
-import com.zaus_app.playlistmaker.domain.usecase.RemoteUseCase
-import com.zaus_app.playlistmaker.domain.usecase.implementations.RemoteUseCaseImpl
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import com.zaus_app.playlistmaker.domain.preferences.PreferenceProvider
+import org.koin.dsl.module
 
-@Module
-@InstallIn(SingletonComponent::class)
-object DomainModule {
-    @Singleton
-    @Provides
-    fun provideRemoteUseCase(repository: RemoteRepository): RemoteUseCase = RemoteUseCaseImpl(repository)
+val domainModule = module {
 
-    @Singleton
-    @Provides
-    fun provideRemoteRepository(trackApi: TrackApi): RemoteRepository = RemoteRepositoryImpl(trackApi)
+    single<PreferenceProvider> {
+        PreferenceProviderImpl(get())
+    }
 
-    @Singleton
-    @Provides
-    fun providePreferences(@ApplicationContext appContext: Context): PreferenceProvider = PreferenceProviderImpl(appContext)
+    factory<MediaPlayer> {
+        MediaPlayer()
+    }
 
 }
