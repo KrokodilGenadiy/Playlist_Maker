@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 
 
-class PlayerViewModel( var mediaPlayer: MediaPlayer): ViewModel() {
+class PlayerViewModel(var mediaPlayer: MediaPlayer): ViewModel() {
     var track: Flow<Track> = emptyFlow()
     var playerState = STATE_DEFAULT
 

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".presentation.fragments.playlist_fragment.PlaylistsFragment">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/clear_history"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/create_playlist_text"
+        android:padding="@dimen/dimens_12_dp"
+        android:textSize="@dimen/dimens_14_sp"
+        android:textAllCaps="false"
+        android:clickable="true"
+        android:fontFamily="@font/ys_display_medium"
+        android:textColor="@color/refresh_text_color"
+        android:background="@drawable/refresh_button_background"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginVertical="@dimen/dimens_24_dp"
+        android:visibility="visible"/>
+
+    <include
+        android:id="@+id/search_history"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        layout="@layout/empty_playlist_placeholder"/>
+
+</LinearLayout>
