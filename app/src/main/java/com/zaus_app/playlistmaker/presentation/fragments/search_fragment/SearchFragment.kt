@@ -54,9 +54,6 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.arrowBack.setOnClickListener {
-            parentFragmentManager.popBackStack()
-        }
         setUpAdapter()
         setUpHistory()
         initSearchView()

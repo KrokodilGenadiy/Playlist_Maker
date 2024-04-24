@@ -6,28 +6,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presentation.fragments.MediaFragment">
 
-    <ImageView
-        android:id="@+id/arrow_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/IconTint"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:src="@drawable/ic_round_arrow_back_24"
-        android:layout_marginTop="@dimen/dimens_20_dp"
-        android:layout_marginStart="@dimen/dimens_20_dp"/>
 
     <TextView
         android:id="@+id/header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dimens_28_dp"
+        android:layout_marginStart="@dimen/dimens_20_dp"
         android:layout_marginTop="@dimen/dimens_18_dp"
         android:text="@string/media_screen_header"
         style="@style/FragmentTitle"
         android:fontFamily="@font/ys_display_medium"
         android:textSize="@dimen/dimens_22_sp"
-        app:layout_constraintStart_toEndOf="@id/arrow_back"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout

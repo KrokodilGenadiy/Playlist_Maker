@@ -2,33 +2,31 @@ package com.zaus_app.playlistmaker.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.replace
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import com.zaus_app.playlistmaker.App
 import com.zaus_app.playlistmaker.R
+import com.zaus_app.playlistmaker.databinding.ActivityMainBinding
 import com.zaus_app.playlistmaker.domain.entities.Track
 import com.zaus_app.playlistmaker.presentation.fragments.MainFragment
+import com.zaus_app.playlistmaker.presentation.fragments.MediaFragment
 import com.zaus_app.playlistmaker.presentation.fragments.player_fragment.PlayerFragment
+import com.zaus_app.playlistmaker.presentation.fragments.search_fragment.SearchFragment
+import com.zaus_app.playlistmaker.presentation.fragments.settings_fragment.SettingsFragment
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
     private var currentFragmentTag: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         App.instance.switchTheme()
-        if (savedInstanceState == null) {
-            launchFragment(MainFragment(), "Main")
-        } else {
-            currentFragmentTag = savedInstanceState.getString("currentFragmentTag")
-            val currentFragment = supportFragmentManager.findFragmentByTag(currentFragmentTag)
-            if (currentFragment != null) {
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_placeholder, currentFragment, currentFragmentTag)
-                    .commit()
-            } else {
-                launchFragment(MainFragment(), "Main")
-            }
-        }
+        initNavigation()
     }
 
     fun launchFragment(fragment: Fragment, tag: String) {
@@ -55,9 +53,20 @@ class MainActivity : AppCompatActivity() {
     private fun checkFragmentExistence(tag: String): Fragment? =
         supportFragmentManager.findFragmentByTag(tag)
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString("currentFragmentTag", currentFragmentTag)
+    private fun initNavigation() {
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_placeholder) as NavHostFragment
+        val navController = navHostFragment.navController
+        binding.bottomNavigation.setupWithNavController(navController)
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.playerFragment -> {
+                    binding.bottomNavigation.visibility = View.GONE
+                }
+                else -> {
+                    binding.bottomNavigation.visibility = View.VISIBLE
+                }
+            }
+        }
     }
 
     override fun onDestroy() {

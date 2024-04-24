@@ -27,9 +27,6 @@ class MediaFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewPager.adapter = MediaPagerAdapter(requireActivity().supportFragmentManager, lifecycle)
-        binding.arrowBack.setOnClickListener{
-            parentFragmentManager.popBackStack()
-        }
         tabMediator = TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             when(position) {
                 0 -> tab.text = FAVORITES
