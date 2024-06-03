@@ -4,18 +4,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.replace
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.zaus_app.playlistmaker.App
 import com.zaus_app.playlistmaker.R
 import com.zaus_app.playlistmaker.databinding.ActivityMainBinding
 import com.zaus_app.playlistmaker.domain.entities.Track
-import com.zaus_app.playlistmaker.presentation.fragments.MainFragment
-import com.zaus_app.playlistmaker.presentation.fragments.MediaFragment
 import com.zaus_app.playlistmaker.presentation.fragments.player_fragment.PlayerFragment
-import com.zaus_app.playlistmaker.presentation.fragments.search_fragment.SearchFragment
-import com.zaus_app.playlistmaker.presentation.fragments.settings_fragment.SettingsFragment
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -29,29 +26,11 @@ class MainActivity : AppCompatActivity() {
         initNavigation()
     }
 
-    fun launchFragment(fragment: Fragment, tag: String) {
-        currentFragmentTag = tag
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragment_placeholder, fragment, tag)
-            .addToBackStack(null)
-            .commit()
-    }
-
     fun launchPlayerFragment(track: Track) {
         val bundle = Bundle()
         bundle.putParcelable("track", track)
-        val fragment = checkFragmentExistence("player") ?: PlayerFragment()
-        fragment.arguments = bundle
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragment_placeholder, fragment, "player")
-            .addToBackStack("player")
-            .commit()
+        findNavController(R.id.fragment_placeholder).navigate(R.id.playerFragment,bundle)
     }
-
-    private fun checkFragmentExistence(tag: String): Fragment? =
-        supportFragmentManager.findFragmentByTag(tag)
 
     private fun initNavigation() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_placeholder) as NavHostFragment
