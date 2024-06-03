@@ -61,9 +61,11 @@ class MainActivity : AppCompatActivity() {
             when (destination.id) {
                 R.id.playerFragment -> {
                     binding.bottomNavigation.visibility = View.GONE
+                    binding.divider.visibility = View.GONE
                 }
                 else -> {
                     binding.bottomNavigation.visibility = View.VISIBLE
+                    binding.divider.visibility = View.VISIBLE
                 }
             }
         }

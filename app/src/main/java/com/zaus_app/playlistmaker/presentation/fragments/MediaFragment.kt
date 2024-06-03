@@ -14,7 +14,7 @@ import com.zaus_app.playlistmaker.presentation.vp_adapter.MediaPagerAdapter
 class MediaFragment : Fragment() {
     private var _binding: FragmentMediaBinding? = null
     private val binding get() = _binding!!
-    private lateinit var tabMediator: TabLayoutMediator
+    private var tabMediator: TabLayoutMediator? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,20 +26,20 @@ class MediaFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.viewPager.adapter = MediaPagerAdapter(requireActivity().supportFragmentManager, lifecycle)
+        binding.viewPager.adapter = MediaPagerAdapter(childFragmentManager, lifecycle)
         tabMediator = TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             when(position) {
                 0 -> tab.text = FAVORITES
                 1 -> tab.text = PLAYLISTS
             }
         }
-        tabMediator.attach()
+        tabMediator?.attach()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
-        tabMediator.detach()
+        tabMediator?.detach()
     }
 
     companion object {
