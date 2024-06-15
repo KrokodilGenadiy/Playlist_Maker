@@ -1,43 +1,104 @@
 package com.zaus_app.playlistmaker.presentation.fragments.player_fragment
 
 import android.media.MediaPlayer
-import android.os.Handler
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.zaus_app.playlistmaker.domain.entities.Track
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 
-class PlayerViewModel(var mediaPlayer: MediaPlayer): ViewModel() {
+class PlayerViewModel: ViewModel() {
+
     var track: Flow<Track> = emptyFlow()
-    var playerState = STATE_DEFAULT
+    private var mediaPlayer: MediaPlayer = MediaPlayer()
 
-    var mainThreadHandler: Handler? = null
-    var mainRunnable: Runnable? = null
+    private var timerJob: Job? = null
 
-    fun startPlayer(op: (Long,Long) -> Runnable) {
+    private val playerState = MutableLiveData<PlayerState>(PlayerState.Default())
+    fun observePlayerState(): LiveData<PlayerState> = playerState
+
+    override fun onCleared() {
+        super.onCleared()
+        releasePlayer()
+    }
+
+    fun onPause() {
+        pausePlayer()
+    }
+
+    fun onPlayButtonClicked() {
+        when(playerState.value) {
+            is PlayerState.Playing -> {
+                pausePlayer()
+            }
+            is PlayerState.Prepared, is PlayerState.Paused -> {
+                startPlayer()
+            }
+            else -> { }
+        }
+    }
+    fun initMediaPlayer(url: String) {
+        mediaPlayer.setDataSource(url)
+        mediaPlayer.prepareAsync()
+        mediaPlayer.setOnPreparedListener {
+            playerState.postValue(PlayerState.Prepared())
+        }
+        mediaPlayer.setOnCompletionListener {
+            playerState.postValue(PlayerState.Prepared())
+        }
+    }
+
+    private fun startPlayer() {
         mediaPlayer.start()
-        val startTime = System.currentTimeMillis()
-        mainThreadHandler?.post(
-            op(startTime, TRACK_TIME)
-        )
-        playerState = STATE_PLAYING
+        playerState.postValue(PlayerState.Playing(getCurrentPlayerPosition()))
+        startTimer()
     }
 
-    fun pausePlayer() {
+    private fun pausePlayer() {
         mediaPlayer.pause()
-        mainRunnable?.let { mainThreadHandler?.removeCallbacks(it) }
-        playerState = STATE_PAUSED
+        timerJob?.cancel()
+        playerState.postValue(PlayerState.Paused(getCurrentPlayerPosition()))
     }
 
-
-    companion object {
-        private const val STATE_DEFAULT = 0
-        private const val STATE_PREPARED = 1
-        private const val STATE_PLAYING = 2
-        private const val STATE_PAUSED = 3
-        private const val DELAY = 300L
-        private const val TRACK_TIME = 29500L
-        private const val START_TIME = "00:00"
+    private fun releasePlayer() {
+        mediaPlayer.stop()
+        mediaPlayer.release()
+        playerState.value = PlayerState.Default()
     }
+
+    private fun startTimer() {
+        timerJob = viewModelScope.launch {
+            while (mediaPlayer.isPlaying) {
+                delay(300L)
+                playerState.postValue(PlayerState.Playing(getCurrentPlayerPosition()))
+            }
+        }
+    }
+
+    private fun getCurrentPlayerPosition(): String {
+        return if (mediaPlayer.currentPosition < 29800)
+            SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition) ?: "00:00"
+        else
+            "00:00"
+    }
+}
+
+sealed class PlayerState(val isPlayButtonEnabled: Boolean, val buttonText: String, val progress: String) {
+
+    class Default : PlayerState(false, "PLAY", "00:00")
+
+    class Prepared : PlayerState(true, "PLAY", "00:00")
+
+    class Playing(progress: String) : PlayerState(true, "PAUSE", progress)
+
+    class Paused(progress: String) : PlayerState(true, "PLAY", progress)
 }
