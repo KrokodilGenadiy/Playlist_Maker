@@ -90,15 +90,24 @@ class PlayerViewModel: ViewModel() {
         else
             "00:00"
     }
+
+
 }
 
 sealed class PlayerState(val isPlayButtonEnabled: Boolean, val buttonText: String, val progress: String) {
 
-    class Default : PlayerState(false, "PLAY", "00:00")
+    class Default : PlayerState(false, PLAY, START_TIME)
 
-    class Prepared : PlayerState(true, "PLAY", "00:00")
+    class Prepared : PlayerState(true, PLAY, START_TIME)
 
-    class Playing(progress: String) : PlayerState(true, "PAUSE", progress)
+    class Playing(progress: String) : PlayerState(true, PAUSE, progress)
 
-    class Paused(progress: String) : PlayerState(true, "PLAY", progress)
+    class Paused(progress: String) : PlayerState(true, PLAY, progress)
+
+    companion object {
+        const val PLAY = "PLAY"
+        const val PAUSE = "PAUSE"
+        const val START_TIME = "00:00"
+    }
 }
+

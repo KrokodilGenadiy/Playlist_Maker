@@ -49,17 +49,13 @@ class PlayerFragment : Fragment() {
 
             viewModel.observePlayerState().observe(viewLifecycleOwner) {
                 buttonPlayTrack.isEnabled = it.isPlayButtonEnabled
-                if  (it.buttonText == "PLAY" || it.progress == START_TIME) {
+                if (it.buttonText == PLAY || it.progress == START_TIME) {
                     viewLifecycleOwner.lifecycleScope.launch {
-                        withContext(Dispatchers.Main) {
-                            buttonPlayTrack.setImageDrawable(resources.getDrawable(R.drawable.play_track))
-                        }
+                        buttonPlayTrack.setImageDrawable(resources.getDrawable(R.drawable.play_track))
                     }
                 } else {
                     viewLifecycleOwner.lifecycleScope.launch {
-                        withContext(Dispatchers.Main) {
-                            buttonPlayTrack.setImageDrawable(resources.getDrawable(R.drawable.pause_button))
-                        }
+                        buttonPlayTrack.setImageDrawable(resources.getDrawable(R.drawable.pause_button))
                     }
                 }
                 trackTimer.text = it.progress
@@ -103,6 +99,7 @@ class PlayerFragment : Fragment() {
 
     companion object {
         private const val START_TIME = "00:00"
+        private const val PLAY = "PLAY"
     }
 
 }
