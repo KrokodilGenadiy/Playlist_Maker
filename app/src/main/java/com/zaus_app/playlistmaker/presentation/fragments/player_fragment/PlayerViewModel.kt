@@ -1,113 +1,120 @@
 package com.zaus_app.playlistmaker.presentation.fragments.player_fragment
 
-import android.media.MediaPlayer
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.zaus_app.playlistmaker.R
 import com.zaus_app.playlistmaker.domain.entities.Track
+import com.zaus_app.playlistmaker.domain.repositrories.AudioPlayerRepository
+import com.zaus_app.playlistmaker.domain.util.State
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
 import java.util.Locale
 
 
-class PlayerViewModel: ViewModel() {
+class PlayerViewModel(private val audioPlayerInteractor: AudioPlayerRepository) : ViewModel() {
+
 
     var track: Flow<Track> = emptyFlow()
-    private var mediaPlayer: MediaPlayer = MediaPlayer()
-
     private var timerJob: Job? = null
 
-    private val playerState = MutableLiveData<PlayerState>(PlayerState.Default())
-    fun observePlayerState(): LiveData<PlayerState> = playerState
+    private val playState = MutableLiveData<StateAudioPlayer>(StateAudioPlayer.Default())
+    fun observePlayState(): LiveData<StateAudioPlayer> = playState
 
     override fun onCleared() {
         super.onCleared()
-        releasePlayer()
+        timerJob?.cancel()
+        stoppingPlayer()
     }
 
     fun onPause() {
         pausePlayer()
     }
 
-    fun onPlayButtonClicked() {
-        when(playerState.value) {
-            is PlayerState.Playing -> {
-                pausePlayer()
-            }
-            is PlayerState.Prepared, is PlayerState.Paused -> {
-                startPlayer()
-            }
-            else -> { }
+    private fun stoppingPlayer() {
+        audioPlayerInteractor.stoppingPlayer()
+        StateAudioPlayer.Default()
+    }
+
+    fun playbackControl() {
+        if (audioPlayerInteractor.getCurrentState() == State.PLAYING) {
+            pausePlayer()
+        } else {
+            startPlayer()
         }
     }
-    fun initMediaPlayer(url: String) {
-        mediaPlayer.setDataSource(url)
-        mediaPlayer.prepareAsync()
-        mediaPlayer.setOnPreparedListener {
-            playerState.postValue(PlayerState.Prepared())
+
+    fun preparePlayer(url: String) {
+        audioPlayerInteractor.preparePlayer(url = url) {
+            playState.postValue(StateAudioPlayer.Prepared())
+            timerJob?.cancel()
         }
-        mediaPlayer.setOnCompletionListener {
-            playerState.postValue(PlayerState.Prepared())
-        }
+        playState.postValue(StateAudioPlayer.Prepared())
+    }
+
+
+    fun pausePlayer() {
+        audioPlayerInteractor.pausePlayer()
+        playState.postValue(StateAudioPlayer.Paused(getCurrentPlayerPosition()))
+        timerJob?.cancel()
     }
 
     private fun startPlayer() {
-        mediaPlayer.start()
-        playerState.postValue(PlayerState.Playing(getCurrentPlayerPosition()))
+        audioPlayerInteractor.startPlayer()
+        playState.postValue(StateAudioPlayer.Playing(getCurrentPlayerPosition()))
         startTimer()
     }
 
-    private fun pausePlayer() {
-        mediaPlayer.pause()
-        timerJob?.cancel()
-        playerState.postValue(PlayerState.Paused(getCurrentPlayerPosition()))
-    }
-
-    private fun releasePlayer() {
-        mediaPlayer.stop()
-        mediaPlayer.release()
-        playerState.value = PlayerState.Default()
+    private fun getCurrentPlayerPosition(): String {
+        return if (audioPlayerInteractor.getCurrentPosition() > 29800)
+            "00:00"
+        else
+            android.icu.text.SimpleDateFormat(
+                "mm:ss",
+                Locale.getDefault()
+            ).format(audioPlayerInteractor.getCurrentPosition()) ?: "00:00"
     }
 
     private fun startTimer() {
         timerJob = viewModelScope.launch {
-            while (mediaPlayer.isPlaying) {
-                delay(300L)
-                playerState.postValue(PlayerState.Playing(getCurrentPlayerPosition()))
+            while (audioPlayerInteractor.getCurrentState() == State.PLAYING) {
+                delay(DELAY_MILLIS)
+                playState.postValue(StateAudioPlayer.Playing(getCurrentPlayerPosition()))
             }
         }
     }
 
-    private fun getCurrentPlayerPosition(): String {
-        return if (mediaPlayer.currentPosition < 29800)
-            SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition) ?: "00:00"
-        else
-            "00:00"
+    companion object {
+        private const val DELAY_MILLIS = 300L
     }
-
 
 }
 
-sealed class PlayerState(val isPlayButtonEnabled: Boolean, val buttonText: String, val progress: String) {
+sealed class StateAudioPlayer(
+    val checkingButtonStatus: Boolean,
+    val buttonState: Int,
+    val progress: String
+) {
+    abstract fun isPrepared(): Boolean
 
-    class Default : PlayerState(false, PLAY, START_TIME)
+    class Default : StateAudioPlayer(false, R.drawable.pause_button, "00:00") {
+        override fun isPrepared(): Boolean = false
+    }
 
-    class Prepared : PlayerState(true, PLAY, START_TIME)
+    class Prepared : StateAudioPlayer(true, R.drawable.play_track, "00:00") {
+        override fun isPrepared(): Boolean = true
+    }
 
-    class Playing(progress: String) : PlayerState(true, PAUSE, progress)
+    class Playing(progress: String) : StateAudioPlayer(true, R.drawable.pause_button, progress) {
+        override fun isPrepared(): Boolean = false
+    }
 
-    class Paused(progress: String) : PlayerState(true, PLAY, progress)
-
-    companion object {
-        const val PLAY = "PLAY"
-        const val PAUSE = "PAUSE"
-        const val START_TIME = "00:00"
+    class Paused(progress: String) : StateAudioPlayer(true, R.drawable.play_track, progress) {
+        override fun isPrepared(): Boolean = false
     }
 }
 

@@ -24,7 +24,7 @@ class PlayerFragment : Fragment() {
     private var _binding: FragmentPlayerBinding? = null
     private val binding get() = _binding!!
     private val viewModel: PlayerViewModel by viewModel()
-
+    private lateinit var timeInterval: String
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -43,22 +43,15 @@ class PlayerFragment : Fragment() {
                 parentFragmentManager.popBackStack()
             }
 
-            buttonPlayTrack.setOnClickListener {
-                viewModel.onPlayButtonClicked()
+            viewModel.observePlayState().observe(viewLifecycleOwner) {
+                timeInterval = it.progress
+                binding.buttonPlayTrack.isEnabled = it.checkingButtonStatus
+                binding.buttonPlayTrack.setImageResource(it.buttonState)
+                binding.trackTimer.text = it.progress
             }
 
-            viewModel.observePlayerState().observe(viewLifecycleOwner) {
-                buttonPlayTrack.isEnabled = it.isPlayButtonEnabled
-                if (it.buttonText == PLAY || it.progress == START_TIME) {
-                    viewLifecycleOwner.lifecycleScope.launch {
-                        buttonPlayTrack.setImageDrawable(resources.getDrawable(R.drawable.play_track))
-                    }
-                } else {
-                    viewLifecycleOwner.lifecycleScope.launch {
-                        buttonPlayTrack.setImageDrawable(resources.getDrawable(R.drawable.pause_button))
-                    }
-                }
-                trackTimer.text = it.progress
+            binding.buttonPlayTrack.setOnClickListener {
+                viewModel.playbackControl()
             }
         }
     }
@@ -81,7 +74,7 @@ class PlayerFragment : Fragment() {
                         .centerCrop()
                         .placeholder(R.drawable.placeholder)
                         .into(trackCover)
-                    viewModel.initMediaPlayer(it.previewUrl)
+                    viewModel.preparePlayer(it.previewUrl)
                 }
             }
         }
@@ -99,7 +92,6 @@ class PlayerFragment : Fragment() {
 
     companion object {
         private const val START_TIME = "00:00"
-        private const val PLAY = "PLAY"
     }
 
 }

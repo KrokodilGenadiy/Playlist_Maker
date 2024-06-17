@@ -5,5 +5,5 @@ import com.zaus_app.playlistmaker.data.base.ResultResponse
 import kotlinx.coroutines.flow.Flow
 
 interface RemoteUseCase {
-    fun getTracksFromWeb(term: String): Flow<ResultResponse<SearchResponse>>
+    suspend fun getTracksFromWeb(term: String): Flow<ResultResponse<SearchResponse>>
 }
