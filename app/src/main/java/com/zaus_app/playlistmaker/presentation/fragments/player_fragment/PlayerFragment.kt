@@ -22,6 +22,7 @@ import java.util.Locale
 
 class PlayerFragment : Fragment() {
     private var _binding: FragmentPlayerBinding? = null
+    private var  favorite_flag = false
     private val binding get() = _binding!!
     private val viewModel: PlayerViewModel by viewModel()
     private lateinit var timeInterval: String
@@ -38,11 +39,12 @@ class PlayerFragment : Fragment() {
         val track = arguments?.get("track") as Track
         viewModel.track = flowOf(track)
         setTrackDetails()
+        initFavoritesButton()
         with(binding) {
             goBack.setOnClickListener {
                 parentFragmentManager.popBackStack()
             }
-
+            setFavoritesButtonStatus()
             viewModel.observePlayState().observe(viewLifecycleOwner) {
                 timeInterval = it.progress
                 binding.buttonPlayTrack.isEnabled = it.checkingButtonStatus
@@ -74,9 +76,36 @@ class PlayerFragment : Fragment() {
                         .centerCrop()
                         .placeholder(R.drawable.placeholder)
                         .into(trackCover)
+                    viewModel.trackId = it.trackId
                     viewModel.preparePlayer(it.previewUrl)
                 }
             }
+        }
+    }
+
+    private fun initFavoritesButton() {
+        with(binding) {
+            buttonFavorites.setOnClickListener {
+                setFavoritesButtonStatus()
+                viewLifecycleOwner.lifecycleScope.launch {
+                    viewModel.track.collectLatest {
+                        viewModel.addTrack(it)
+                    }
+                }
+                /*favorite_flag = if (!favorite_flag) {
+                    binding.buttonPlayTrack.setBackgroundResource(R.drawable.add_favorites_filled)
+                    true
+                } else {
+                    binding.buttonPlayTrack.setBackgroundResource(R.drawable.add_favorites)
+                    false
+                }*/
+            }
+        }
+    }
+    private fun setFavoritesButtonStatus() {
+        viewModel.isFavoriteTrack.observe(viewLifecycleOwner) { isFavoriteTrack ->
+            if (isFavoriteTrack) binding.buttonFavorites.setImageResource(R.drawable.add_favorites_filled)
+            else binding.buttonFavorites.setImageResource(R.drawable.add_favorites)
         }
     }
 

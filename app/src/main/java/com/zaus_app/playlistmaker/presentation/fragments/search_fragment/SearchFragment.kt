@@ -132,7 +132,6 @@ class SearchFragment : Fragment() {
 
     private fun initSearchView() {
         with(binding.searchView) {
-
             findViewById<ImageView>(androidx.appcompat.R.id.search_close_btn)
                 .setOnClickListener {
                     setQuery("", false)

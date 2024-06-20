@@ -2,6 +2,7 @@ package com.zaus_app.playlistmaker
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
+import com.zaus_app.playlistmaker.domain.di.modules.dataModule
 import com.zaus_app.playlistmaker.domain.di.modules.domainModule
 import com.zaus_app.playlistmaker.domain.di.modules.remoteModule
 import com.zaus_app.playlistmaker.domain.di.modules.repositoryModule
@@ -19,7 +20,7 @@ class App : Application() {
         instance = this
         startKoin {
             androidContext(this@App)
-            modules(domainModule, repositoryModule, useCaseModule, remoteModule, viewModelModule)
+            modules(domainModule, repositoryModule, useCaseModule, remoteModule, viewModelModule, dataModule)
         }
     }
 
