@@ -20,17 +20,10 @@ class FavoritesDatabaseRepositoryImpl(
         track.trackId.let { database.trackDao().deleteTrack(it) }
     }
 
-    override fun getTracksIDs(): Flow<List<Int>> {
-        return database.trackDao().getTracksIds()
-    }
+    override fun getTracksIDs(): Flow<List<Int>> = database.trackDao().getTracksIds()
 
-    override suspend fun getTrackById(trackId: Int): Track? {
-        return database.trackDao().getTrackById(trackId)
-    }
+    override suspend fun getTrackById(trackId: Int): Track? = database.trackDao().getTrackById(trackId)
 
-    override fun getAllFavoritesTrack(): Flow<List<Track>> {
-        return database.trackDao().getAllTrack().map { result ->
-            result.map { it }
-        }
-    }
+    override fun getAllFavoritesTrack(): Flow<List<Track>> = database.trackDao().getAllTrack()
+
 }
