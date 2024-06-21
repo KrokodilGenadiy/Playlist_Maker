@@ -58,6 +58,18 @@ class PlayerFragment : Fragment() {
         }
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("timer",binding.trackTimer.text.toString() )
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        if (savedInstanceState != null) {
+            binding.trackTimer.text = savedInstanceState.getString("timer")
+        }
+    }
+
     private fun setTrackDetails() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.track.collectLatest {
@@ -70,7 +82,8 @@ class PlayerFragment : Fragment() {
                     yearRelease.text = it.releaseDate.substring(0, 4)
                     genreName.text = it.primaryGenreName
                     countryName.text = it.country
-                    trackTimer.text = START_TIME
+                    if (trackTimer.text.isEmpty())
+                        trackTimer.text = START_TIME
                     Glide.with(root.context)
                         .load(it.artworkUrl100.replaceAfterLast('/', "512x512bb.jpg"))
                         .centerCrop()
@@ -89,6 +102,7 @@ class PlayerFragment : Fragment() {
                 setFavoritesButtonStatus()
                 viewLifecycleOwner.lifecycleScope.launch {
                     viewModel.track.collectLatest {
+                        it.addTime = System.currentTimeMillis()
                         viewModel.addTrack(it)
                     }
                 }

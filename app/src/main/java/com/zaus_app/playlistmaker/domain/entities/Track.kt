@@ -9,7 +9,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 
-@Entity(tableName = "favorites_table",indices = [Index(value = ["Track"], unique = true)])
+@Entity(tableName = "favorites_table",indices = [Index(value = ["Track"], unique = false)])
 data class Track(
     @PrimaryKey
     val trackId: Int,
@@ -30,6 +30,8 @@ data class Track(
     @ColumnInfo(name = "Country")
     val country: String,
     @ColumnInfo(name = "Url")
-    val previewUrl: String
+    val previewUrl: String,
+    @ColumnInfo(name = "Add time")
+    var addTime: Long
 ): Parcelable
 

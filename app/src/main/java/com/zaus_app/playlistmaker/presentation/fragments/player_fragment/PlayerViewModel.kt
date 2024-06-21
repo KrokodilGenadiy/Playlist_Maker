@@ -77,7 +77,7 @@ class PlayerViewModel(private val audioPlayerInteractor: AudioPlayerRepository,
     }
 
 
-    fun pausePlayer() {
+    private fun pausePlayer() {
         audioPlayerInteractor.pausePlayer()
         playState.postValue(StateAudioPlayer.Paused(getCurrentPlayerPosition()))
         timerJob?.cancel()

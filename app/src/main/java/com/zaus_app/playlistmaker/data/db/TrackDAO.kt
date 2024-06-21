@@ -16,7 +16,7 @@ interface TrackDao {
     @Query("DELETE FROM favorites_table WHERE trackId = :trackId")
     suspend fun deleteTrack(trackId: Int)
 
-    @Query("SELECT * FROM favorites_table ORDER BY trackId DESC")
+    @Query("SELECT * FROM favorites_table ORDER BY `Add time` DESC")
     fun getAllTrack(): Flow<List<Track>>
 
     @Query("SELECT trackId FROM favorites_table ")
