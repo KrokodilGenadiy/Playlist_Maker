@@ -5,13 +5,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
+import androidx.navigation.fragment.findNavController
+import com.zaus_app.playlistmaker.R
 import com.zaus_app.playlistmaker.databinding.FragmentPlaylistsBinding
+import com.zaus_app.playlistmaker.presentation.rv_adapter.PlaylistAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlaylistsFragment : Fragment() {
     private var _binding: FragmentPlaylistsBinding? = null
     private val binding get() = _binding!!
     private val viewModel: PlaylistsViewModel by viewModel()
+    private val playlistAdapter = PlaylistAdapter { playlist ->
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -19,6 +26,46 @@ class PlaylistsFragment : Fragment() {
     ): View {
         _binding = FragmentPlaylistsBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        newPlaylist()
+        setUpAdapter()
+        updateVisibility()
+        viewModel.observeState().observe(viewLifecycleOwner) {
+            when (it) {
+                is PlaylistsState.Content -> {
+                    playlistAdapter.submitList(it.playList)
+                }
+                is PlaylistsState.Empty -> {
+                    binding.placeholder.root.isVisible = playlistAdapter.currentList.isEmpty()
+                    playlistAdapter.submitList(it.playList)
+                }
+            }
+
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.placeholder.root.isVisible = playlistAdapter.currentList.isEmpty()
+    }
+
+    fun updateVisibility() {
+        binding.placeholder.root.isVisible = playlistAdapter.currentList.isEmpty()
+    }
+
+    fun newPlaylist() {
+        binding.newPlaylist.setOnClickListener {
+            findNavController().navigate(R.id.action_mediaFragment_to_newPlaylistFragment)
+        }
+    }
+
+    fun setUpAdapter() {
+        binding.PlaylistsRecycler.apply {
+            adapter = playlistAdapter
+        }
     }
 
     override fun onDestroy() {

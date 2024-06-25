@@ -11,7 +11,7 @@
 
     <color name="yp_gray">#AEAFB4</color>
     <color name="circle_shape">#401A1B22</color>
-    <color name="refresh_text_color">#FFFFFFFF</color>
+    <color name="primary">#FFFFFFFF</color>
     <color name="bottom_nav">#FFFFFFFF</color>
     <color name="classic_text">#1A1B22</color>
     <color name="track_item_name_text">#000000</color>

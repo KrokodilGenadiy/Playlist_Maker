@@ -2,7 +2,9 @@ package com.zaus_app.playlistmaker.domain.di.modules
 
 import com.zaus_app.playlistmaker.domain.preferences.PreferenceProvider
 import com.zaus_app.playlistmaker.domain.usecase.RemoteUseCase
+import com.zaus_app.playlistmaker.presentation.fragments.add_track_to_playlist.AddTrackViewModel
 import com.zaus_app.playlistmaker.presentation.fragments.favorites_fragment.FavoritesViewModel
+import com.zaus_app.playlistmaker.presentation.fragments.new_playlist.NewPlaylistViewModel
 import com.zaus_app.playlistmaker.presentation.fragments.player_fragment.PlayerViewModel
 import com.zaus_app.playlistmaker.presentation.fragments.playlist_fragment.PlaylistsViewModel
 import com.zaus_app.playlistmaker.presentation.fragments.search_fragment.SearchViewModel
@@ -28,6 +30,14 @@ val viewModelModule = module {
     }
 
     viewModel<PlaylistsViewModel> {
-        PlaylistsViewModel()
+        PlaylistsViewModel(get())
+    }
+
+    viewModel<NewPlaylistViewModel> {
+        NewPlaylistViewModel(get())
+    }
+
+    viewModel<AddTrackViewModel> {
+        AddTrackViewModel(get())
     }
 }

@@ -32,6 +32,12 @@ class MainActivity : AppCompatActivity() {
         findNavController(R.id.fragment_placeholder).navigate(R.id.playerFragment,bundle)
     }
 
+    fun launchAddTrackFragment(track: Track) {
+        val bundle = Bundle()
+        bundle.putParcelable("track", track)
+        findNavController(R.id.fragment_placeholder).navigate(R.id.addTrackFragment,bundle)
+    }
+
     private fun initNavigation() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_placeholder) as NavHostFragment
         val navController = navHostFragment.navController
@@ -39,6 +45,10 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.playerFragment -> {
+                    binding.bottomNavigation.visibility = View.GONE
+                    binding.divider.visibility = View.GONE
+                }
+                R.id.newPlaylistFragment -> {
                     binding.bottomNavigation.visibility = View.GONE
                     binding.divider.visibility = View.GONE
                 }

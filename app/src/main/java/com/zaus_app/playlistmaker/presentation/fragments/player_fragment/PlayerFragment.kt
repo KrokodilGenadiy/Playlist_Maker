@@ -6,11 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.bumptech.glide.Glide
 import com.zaus_app.playlistmaker.R
 import com.zaus_app.playlistmaker.domain.entities.Track
 import com.zaus_app.playlistmaker.databinding.FragmentPlayerBinding
+import com.zaus_app.playlistmaker.presentation.MainActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
@@ -22,7 +24,7 @@ import java.util.Locale
 
 class PlayerFragment : Fragment() {
     private var _binding: FragmentPlayerBinding? = null
-    private var  favorite_flag = false
+    private var favorite_flag = false
     private val binding get() = _binding!!
     private val viewModel: PlayerViewModel by viewModel()
     private lateinit var timeInterval: String
@@ -51,8 +53,14 @@ class PlayerFragment : Fragment() {
                 binding.buttonPlayTrack.setImageResource(it.buttonState)
                 binding.trackTimer.text = it.progress
             }
-
-            binding.buttonPlayTrack.setOnClickListener {
+            addPlaylistButton.setOnClickListener {
+                viewLifecycleOwner.lifecycleScope.launch {
+                    viewModel.track.collectLatest {
+                        (requireActivity() as MainActivity).launchAddTrackFragment(it)
+                    }
+                }
+            }
+            buttonPlayTrack.setOnClickListener {
                 viewModel.playbackControl()
             }
         }
@@ -60,7 +68,7 @@ class PlayerFragment : Fragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString("timer",binding.trackTimer.text.toString() )
+        outState.putString("timer", binding.trackTimer.text.toString())
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
@@ -116,6 +124,7 @@ class PlayerFragment : Fragment() {
             }
         }
     }
+
     private fun setFavoritesButtonStatus() {
         viewModel.isFavoriteTrack.observe(viewLifecycleOwner) { isFavoriteTrack ->
             if (isFavoriteTrack) binding.buttonFavorites.setImageResource(R.drawable.add_favorites_filled)

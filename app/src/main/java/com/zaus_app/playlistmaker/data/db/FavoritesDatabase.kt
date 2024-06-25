@@ -2,6 +2,7 @@ package com.zaus_app.playlistmaker.data.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import com.zaus_app.playlistmaker.data.db.dao.TrackDao
 import com.zaus_app.playlistmaker.domain.entities.Track
 
 @Database(entities = [Track::class], version = 1, exportSchema = false)

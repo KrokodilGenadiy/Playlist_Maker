@@ -2,6 +2,7 @@ package com.zaus_app.playlistmaker.domain.di.modules
 
 import androidx.room.Room
 import com.zaus_app.playlistmaker.data.db.FavoritesDatabase
+import com.zaus_app.playlistmaker.data.db.PlaylistDatabase
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -12,6 +13,14 @@ val dataModule = module {
             androidContext(),
             FavoritesDatabase::class.java,
             "db1FavoritesTracks.db"
+        ).build()
+    }
+
+    single {
+        Room.databaseBuilder(
+            androidContext(),
+            PlaylistDatabase::class.java,
+            "db2Playlists.db"
         ).build()
     }
 }

@@ -37,4 +37,10 @@
     <string name="menu_search_title">Поиск</string>
     <string name="menu_media_title">Медиатека</string>
     <string name="menu_settings_title">Настройки</string>
+    <string name="new_play_list">Новый плейлист</string>
+    <string name="create">Создать</string>
+    <string name="description">Описание</string>
+    <string name="name">Название*</string>
+    <string name="playlist_text">Playlist name</string>
+    <string name="addToPlaylist">Добавить в плейлист</string>
 </resources>

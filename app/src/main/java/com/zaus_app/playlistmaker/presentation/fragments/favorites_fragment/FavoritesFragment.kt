@@ -33,10 +33,6 @@ class FavoritesFragment : Fragment() {
         setupObserver()
     }
 
-    override fun onPause() {
-        super.onPause()
-    }
-
     private fun setupObserver() {
         viewModel.stateLiveData.observe(viewLifecycleOwner) { stateLiveData ->
             when (stateLiveData) {

@@ -1,4 +1,4 @@
-package com.zaus_app.playlistmaker.data.db
+package com.zaus_app.playlistmaker.data.db.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
