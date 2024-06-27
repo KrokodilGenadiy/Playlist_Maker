@@ -1,10 +1,11 @@
-package com.zaus_app.playlistmaker.data.implementations
+package com.zaus_app.playlistmaker.data.implementations.interactors
 
+import com.zaus_app.playlistmaker.domain.interactors.AudioPlayerInteractor
 import com.zaus_app.playlistmaker.domain.repositrories.AudioPlayerRepository
 import com.zaus_app.playlistmaker.domain.util.State
 
 class AudioPlayerInteractorImpl(private val audioPlayerRepository: AudioPlayerRepository) :
-    AudioPlayerRepository {
+    AudioPlayerInteractor {
     override fun startPlayer() {
         audioPlayerRepository.startPlayer()
     }

@@ -52,6 +52,10 @@ class MainActivity : AppCompatActivity() {
                     binding.bottomNavigation.visibility = View.GONE
                     binding.divider.visibility = View.GONE
                 }
+                R.id.addTrackFragment -> {
+                    binding.bottomNavigation.visibility = View.GONE
+                    binding.divider.visibility = View.GONE
+                }
                 else -> {
                     binding.bottomNavigation.visibility = View.VISIBLE
                     binding.divider.visibility = View.VISIBLE

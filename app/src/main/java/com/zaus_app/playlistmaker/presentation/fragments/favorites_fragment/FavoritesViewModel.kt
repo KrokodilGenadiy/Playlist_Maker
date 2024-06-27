@@ -5,11 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zaus_app.playlistmaker.domain.entities.Track
-import com.zaus_app.playlistmaker.domain.repositrories.FavoritesDatabaseRepository
+import com.zaus_app.playlistmaker.domain.interactors.FavoritesInteractor
 import kotlinx.coroutines.launch
 
 class FavoritesViewModel(
-    private val favoritesRepository: FavoritesDatabaseRepository,
+    private val interactor: FavoritesInteractor,
 ) :
     ViewModel() {
 
@@ -18,7 +18,7 @@ class FavoritesViewModel(
 
     init {
         viewModelScope.launch {
-            favoritesRepository
+            interactor
                 .getAllFavoritesTrack()
                 .collect { result ->
                     if (result.isEmpty()) {
@@ -32,7 +32,7 @@ class FavoritesViewModel(
 
     private fun fetchFavoriteTracks() {
         viewModelScope.launch {
-            favoritesRepository.getAllFavoritesTrack().collect { result ->
+            interactor.getAllFavoritesTrack().collect { result ->
                 if (result.isEmpty()) {
                     _stateLiveData.postValue(FavoritesState.Error)
                 } else {
@@ -44,7 +44,7 @@ class FavoritesViewModel(
 
     fun addTrackToFavorites(track: Track) {
         viewModelScope.launch {
-            favoritesRepository.addTrack(track)
+            interactor.addTrack(track)
             fetchFavoriteTracks()
         }
     }

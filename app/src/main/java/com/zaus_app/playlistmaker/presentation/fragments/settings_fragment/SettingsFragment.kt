@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.zaus_app.playlistmaker.App
 import com.zaus_app.playlistmaker.R
 import com.zaus_app.playlistmaker.databinding.FragmentSettingsBinding
+import com.zaus_app.playlistmaker.presentation.fragments.playlist_fragment.PlaylistsState
 import com.zaus_app.playlistmaker.presentation.fragments.search_fragment.SearchViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -44,7 +45,10 @@ class SettingsFragment : Fragment() {
             themeSwitcher.setOnCheckedChangeListener { _, checked ->
                 App.instance.switchTheme(checked)
             }
-            themeSwitcher.isChecked = viewModel.getThemeStatus()
+            viewModel.observeTheme().observe(viewLifecycleOwner) {
+                viewModel.getThemeStatus()
+                themeSwitcher.isChecked = it
+            }
         }
     }
 

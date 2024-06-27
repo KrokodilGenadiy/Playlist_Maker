@@ -6,17 +6,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zaus_app.playlistmaker.domain.entities.Playlist
 import com.zaus_app.playlistmaker.domain.entities.Track
-import com.zaus_app.playlistmaker.domain.repositrories.PlaylistRepository
+import com.zaus_app.playlistmaker.domain.interactors.PlaylistInteractor
 import com.zaus_app.playlistmaker.presentation.fragments.playlist_fragment.PlaylistsState
 import kotlinx.coroutines.launch
 
-class AddTrackViewModel(private val repository: PlaylistRepository): ViewModel() {
+class AddTrackViewModel(private val interactor: PlaylistInteractor): ViewModel() {
     private val stateLiveData = MutableLiveData<PlaylistsState>()
     fun observeState(): LiveData<PlaylistsState> = stateLiveData
 
     init {
         viewModelScope.launch {
-            repository.getAllPlaylists().collect { result ->
+            interactor.getAllPlaylists().collect { result ->
                 if (result.isEmpty()) {
                     stateLiveData.postValue(PlaylistsState.Empty(result))
                 } else {
@@ -25,10 +25,5 @@ class AddTrackViewModel(private val repository: PlaylistRepository): ViewModel()
             }
         }
     }
-    suspend fun updatePlaylist(track: Track,playlist: Playlist) {
-        repository.addTrackInPlaylist(track.trackId,playlist)
-    }
-
-    suspend fun getPlaylist(playlist: Playlist): Playlist = repository.getPlaylistById(playlist.id)
-
+    suspend fun updatePlaylist(track: Track,playlist: Playlist): Boolean = interactor.addTrackInPlaylist(track,playlist)
 }

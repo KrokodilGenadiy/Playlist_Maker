@@ -37,6 +37,7 @@ class PlaylistAdapter(private val clickListener: OnItemClickListener)  :
         fun bind(playlist: Playlist) {
             binding.apply {
                 playlistName.text = playlist.playlistName
+                countTracks.text = playlist.tracksCount.toString()
                 Glide.with(root.context)
                     .load(playlist.urlImage)
                     .centerCrop()

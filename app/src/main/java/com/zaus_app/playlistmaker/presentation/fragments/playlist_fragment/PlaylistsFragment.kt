@@ -37,19 +37,15 @@ class PlaylistsFragment : Fragment() {
             when (it) {
                 is PlaylistsState.Content -> {
                     playlistAdapter.submitList(it.playList)
+                    binding.placeholder.root.visibility = View.GONE
                 }
                 is PlaylistsState.Empty -> {
-                    binding.placeholder.root.isVisible = playlistAdapter.currentList.isEmpty()
+                    binding.placeholder.root.visibility = View.VISIBLE
                     playlistAdapter.submitList(it.playList)
                 }
             }
 
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        binding.placeholder.root.isVisible = playlistAdapter.currentList.isEmpty()
     }
 
     fun updateVisibility() {

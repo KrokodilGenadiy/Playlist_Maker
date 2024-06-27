@@ -6,11 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zaus_app.playlistmaker.domain.entities.Playlist
-import com.zaus_app.playlistmaker.domain.repositrories.PlaylistRepository
+import com.zaus_app.playlistmaker.domain.interactors.PlaylistInteractor
 import kotlinx.coroutines.launch
 
 open class NewPlaylistViewModel(
-    private val playlistsRepository: PlaylistRepository
+    private val interactor: PlaylistInteractor
 ) : ViewModel() {
 
    private val statePlaylistLiveData = MutableLiveData<NewPlaylistState>()
@@ -18,14 +18,14 @@ open class NewPlaylistViewModel(
 
     fun addPlaylist(playlistName: String, playlistDescription: String, imageUri: Uri?) {
         viewModelScope.launch {
-            playlistsRepository.addPlaylist(
+            interactor.addPlaylist(
                 Playlist(
                     0,
                     playlistName,
                     playlistDescription,
                     if (imageUri != null)
-                        playlistsRepository.getImageFromPrivateStorage(
-                        playlistsRepository.saveImageToPrivateStorage(imageUri)
+                        interactor.getImageFromPrivateStorage(
+                        interactor.saveImageToPrivateStorage(imageUri)
                     ) else null,
                     mutableListOf(),
                     0

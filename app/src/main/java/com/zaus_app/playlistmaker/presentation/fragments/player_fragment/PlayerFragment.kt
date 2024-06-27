@@ -24,7 +24,6 @@ import java.util.Locale
 
 class PlayerFragment : Fragment() {
     private var _binding: FragmentPlayerBinding? = null
-    private var favorite_flag = false
     private val binding get() = _binding!!
     private val viewModel: PlayerViewModel by viewModel()
     private lateinit var timeInterval: String
@@ -114,13 +113,6 @@ class PlayerFragment : Fragment() {
                         viewModel.addTrack(it)
                     }
                 }
-                /*favorite_flag = if (!favorite_flag) {
-                    binding.buttonPlayTrack.setBackgroundResource(R.drawable.add_favorites_filled)
-                    true
-                } else {
-                    binding.buttonPlayTrack.setBackgroundResource(R.drawable.add_favorites)
-                    false
-                }*/
             }
         }
     }

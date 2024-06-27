@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/primary"
     android:orientation="vertical"
     tools:context=".presentation.fragments.new_playlist.NewPlaylistFragment">
 
@@ -22,13 +23,16 @@
         app:barrierDirection="bottom"
         app:constraint_referenced_tags="inputDescriptionLayout" />
 
-    <androidx.appcompat.widget.Toolbar
+    <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/btnBackFromNewPlayList"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         app:titleMarginBottom="@dimen/dimens_16_dp"
         app:layout_constraintTop_toTopOf="parent"
+        style="@style/ToolbarTheme"
+        android:theme="@style/ToolbarTheme"
         app:navigationIcon="@drawable/ic_round_arrow_back_24"
+        app:navigationIconTint="@color/second_primary"
         app:title="@string/new_play_list" />
 
     <ImageView
@@ -72,6 +76,7 @@
             style="@style/PLEditTextForNewPlaylist"
             android:hint="@string/description" />
     </com.google.android.material.textfield.TextInputLayout>
+
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/createPlaylist"

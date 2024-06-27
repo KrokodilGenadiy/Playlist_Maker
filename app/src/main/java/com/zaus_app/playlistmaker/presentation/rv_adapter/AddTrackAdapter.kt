@@ -17,7 +17,7 @@ class AddTrackAdapter(private val clickListener: OnItemClickListener)  :
         val binding =
             ItemAddTrackBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return PlaylistViewHolder(binding) {
-            clickListener.click(getItem(it))
+            clickListener.click(getItem(it),it)
         }
     }
 
@@ -58,6 +58,6 @@ class AddTrackAdapter(private val clickListener: OnItemClickListener)  :
     }
 
     fun interface OnItemClickListener {
-        fun click(playlist: Playlist)
+        fun click(playlist: Playlist, position: Int)
     }
 }

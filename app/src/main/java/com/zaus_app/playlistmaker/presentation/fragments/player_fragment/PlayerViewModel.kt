@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zaus_app.playlistmaker.R
 import com.zaus_app.playlistmaker.domain.entities.Track
+import com.zaus_app.playlistmaker.domain.interactors.AudioPlayerInteractor
+import com.zaus_app.playlistmaker.domain.interactors.FavoritesInteractor
 import com.zaus_app.playlistmaker.domain.repositrories.AudioPlayerRepository
 import com.zaus_app.playlistmaker.domain.repositrories.FavoritesDatabaseRepository
 import com.zaus_app.playlistmaker.domain.util.State
@@ -19,8 +21,8 @@ import kotlinx.coroutines.launch
 import java.util.Locale
 
 
-class PlayerViewModel(private val audioPlayerInteractor: AudioPlayerRepository,
-    private val favoritesRepository: FavoritesDatabaseRepository) : ViewModel() {
+class PlayerViewModel(private val audioPlayerInteractor: AudioPlayerInteractor,
+    private val favoritesInteractor: FavoritesInteractor) : ViewModel() {
 
 
     var track: Flow<Track> = emptyFlow()
@@ -36,7 +38,7 @@ class PlayerViewModel(private val audioPlayerInteractor: AudioPlayerRepository,
             track.collectLatest { trackId = it.trackId }
         }
         viewModelScope.launch {
-            favoritesRepository.getTracksIDs().collect { trackIds ->
+            favoritesInteractor.getTracksIDs().collect { trackIds ->
                 _isFavoriteTrack.value = trackIds.contains(trackId)
             }
         }
@@ -111,10 +113,10 @@ class PlayerViewModel(private val audioPlayerInteractor: AudioPlayerRepository,
     fun addTrack(track: Track) {
         viewModelScope.launch {
             if (_isFavoriteTrack.value == true) {
-                favoritesRepository.deleteTrack(track)
+                favoritesInteractor.deleteTrack(track)
                 _isFavoriteTrack.postValue(false)
             } else {
-                favoritesRepository.addTrack(track)
+                favoritesInteractor.addTrack(track)
                 _isFavoriteTrack.postValue(true)
             }
         }
