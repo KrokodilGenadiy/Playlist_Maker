@@ -1,26 +1,48 @@
 package com.zaus_app.playlistmaker.presentation.fragments.player_fragment
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zaus_app.playlistmaker.R
 import com.zaus_app.playlistmaker.domain.entities.Track
+import com.zaus_app.playlistmaker.domain.interactors.AudioPlayerInteractor
+import com.zaus_app.playlistmaker.domain.interactors.FavoritesInteractor
 import com.zaus_app.playlistmaker.domain.repositrories.AudioPlayerRepository
+import com.zaus_app.playlistmaker.domain.repositrories.FavoritesDatabaseRepository
 import com.zaus_app.playlistmaker.domain.util.State
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.launch
 import java.util.Locale
 
 
-class PlayerViewModel(private val audioPlayerInteractor: AudioPlayerRepository) : ViewModel() {
+class PlayerViewModel(private val audioPlayerInteractor: AudioPlayerInteractor,
+    private val favoritesInteractor: FavoritesInteractor) : ViewModel() {
 
 
     var track: Flow<Track> = emptyFlow()
     private var timerJob: Job? = null
+
+    private val _isFavoriteTrack = MutableLiveData(false)
+    val isFavoriteTrack: LiveData<Boolean> = _isFavoriteTrack
+    var trackId = -1
+
+
+    init {
+        viewModelScope.launch {
+            track.collectLatest { trackId = it.trackId }
+        }
+        viewModelScope.launch {
+            favoritesInteractor.getTracksIDs().collect { trackIds ->
+                _isFavoriteTrack.value = trackIds.contains(trackId)
+            }
+        }
+    }
 
     private val playState = MutableLiveData<StateAudioPlayer>(StateAudioPlayer.Default())
     fun observePlayState(): LiveData<StateAudioPlayer> = playState
@@ -57,7 +79,7 @@ class PlayerViewModel(private val audioPlayerInteractor: AudioPlayerRepository) 
     }
 
 
-    fun pausePlayer() {
+    private fun pausePlayer() {
         audioPlayerInteractor.pausePlayer()
         playState.postValue(StateAudioPlayer.Paused(getCurrentPlayerPosition()))
         timerJob?.cancel()
@@ -84,6 +106,18 @@ class PlayerViewModel(private val audioPlayerInteractor: AudioPlayerRepository) 
             while (audioPlayerInteractor.getCurrentState() == State.PLAYING) {
                 delay(DELAY_MILLIS)
                 playState.postValue(StateAudioPlayer.Playing(getCurrentPlayerPosition()))
+            }
+        }
+    }
+
+    fun addTrack(track: Track) {
+        viewModelScope.launch {
+            if (_isFavoriteTrack.value == true) {
+                favoritesInteractor.deleteTrack(track)
+                _isFavoriteTrack.postValue(false)
+            } else {
+                favoritesInteractor.addTrack(track)
+                _isFavoriteTrack.postValue(true)
             }
         }
     }

@@ -55,9 +55,9 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpAdapter()
-        setUpHistory()
         initSearchView()
         search()
+        setUpHistory()
         enableRefresh()
     }
 
@@ -128,11 +128,8 @@ class SearchFragment : Fragment() {
         }
     }
 
-
-
     private fun initSearchView() {
         with(binding.searchView) {
-
             findViewById<ImageView>(androidx.appcompat.R.id.search_close_btn)
                 .setOnClickListener {
                     setQuery("", false)
@@ -159,9 +156,19 @@ class SearchFragment : Fragment() {
 
     private fun enableRefresh() {
         binding.refresh.setOnClickListener {
+            viewModel.setQuery("")
             viewModel.setQuery(binding.searchView.query.toString())
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        if (trackAdapter.currentList.isNotEmpty() || binding.searchView.query.isNotEmpty()) {
+            binding.ncPlaceholder.root.visibility = View.GONE
+            binding.historyContainer.visibility = View.GONE
+        }
+    }
+
 
     private fun setUpAdapter() {
         binding.trackRecycler.apply {

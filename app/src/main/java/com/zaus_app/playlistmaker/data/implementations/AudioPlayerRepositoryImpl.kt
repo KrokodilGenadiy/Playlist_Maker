@@ -5,7 +5,7 @@ import com.zaus_app.playlistmaker.domain.repositrories.AudioPlayerRepository
 import com.zaus_app.playlistmaker.domain.util.State
 
 
-class AudioPlayerRepositoryImpl (private val mediaPlayer: MediaPlayer):
+class AudioPlayerRepositoryImpl (private var mediaPlayer: MediaPlayer):
     AudioPlayerRepository {
 
     private var playerState = State.DEFAULT
@@ -21,15 +21,17 @@ class AudioPlayerRepositoryImpl (private val mediaPlayer: MediaPlayer):
     }
 
     override fun preparePlayer(url: String, statusBeenChanged: (s: State) -> Unit) {
-        mediaPlayer.setDataSource(url)
-        mediaPlayer.prepareAsync()
-        mediaPlayer.setOnCompletionListener {
-            playerState = State.PREPARED
-            statusBeenChanged(State.PREPARED)
-        }
-        mediaPlayer.setOnPreparedListener {
-            playerState = State.PREPARED
-            statusBeenChanged(State.PREPARED)
+        if (playerState != State.PAUSED) {
+            mediaPlayer.setDataSource(url)
+            mediaPlayer.prepareAsync()
+            mediaPlayer.setOnCompletionListener {
+                playerState = State.PREPARED
+                statusBeenChanged(State.PREPARED)
+            }
+            mediaPlayer.setOnPreparedListener {
+                playerState = State.PREPARED
+                statusBeenChanged(State.PREPARED)
+            }
         }
     }
 

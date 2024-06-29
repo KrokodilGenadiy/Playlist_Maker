@@ -6,11 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.bumptech.glide.Glide
 import com.zaus_app.playlistmaker.R
 import com.zaus_app.playlistmaker.domain.entities.Track
 import com.zaus_app.playlistmaker.databinding.FragmentPlayerBinding
+import com.zaus_app.playlistmaker.presentation.MainActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
@@ -38,21 +40,40 @@ class PlayerFragment : Fragment() {
         val track = arguments?.get("track") as Track
         viewModel.track = flowOf(track)
         setTrackDetails()
+        initFavoritesButton()
         with(binding) {
             goBack.setOnClickListener {
                 parentFragmentManager.popBackStack()
             }
-
+            setFavoritesButtonStatus()
             viewModel.observePlayState().observe(viewLifecycleOwner) {
                 timeInterval = it.progress
                 binding.buttonPlayTrack.isEnabled = it.checkingButtonStatus
                 binding.buttonPlayTrack.setImageResource(it.buttonState)
                 binding.trackTimer.text = it.progress
             }
-
-            binding.buttonPlayTrack.setOnClickListener {
+            addPlaylistButton.setOnClickListener {
+                viewLifecycleOwner.lifecycleScope.launch {
+                    viewModel.track.collectLatest {
+                        (requireActivity() as MainActivity).launchAddTrackFragment(it)
+                    }
+                }
+            }
+            buttonPlayTrack.setOnClickListener {
                 viewModel.playbackControl()
             }
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("timer", binding.trackTimer.text.toString())
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        if (savedInstanceState != null) {
+            binding.trackTimer.text = savedInstanceState.getString("timer")
         }
     }
 
@@ -68,15 +89,38 @@ class PlayerFragment : Fragment() {
                     yearRelease.text = it.releaseDate.substring(0, 4)
                     genreName.text = it.primaryGenreName
                     countryName.text = it.country
-                    trackTimer.text = START_TIME
+                    if (trackTimer.text.isEmpty())
+                        trackTimer.text = START_TIME
                     Glide.with(root.context)
                         .load(it.artworkUrl100.replaceAfterLast('/', "512x512bb.jpg"))
                         .centerCrop()
                         .placeholder(R.drawable.placeholder)
                         .into(trackCover)
+                    viewModel.trackId = it.trackId
                     viewModel.preparePlayer(it.previewUrl)
                 }
             }
+        }
+    }
+
+    private fun initFavoritesButton() {
+        with(binding) {
+            buttonFavorites.setOnClickListener {
+                setFavoritesButtonStatus()
+                viewLifecycleOwner.lifecycleScope.launch {
+                    viewModel.track.collectLatest {
+                        it.addTime = System.currentTimeMillis()
+                        viewModel.addTrack(it)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setFavoritesButtonStatus() {
+        viewModel.isFavoriteTrack.observe(viewLifecycleOwner) { isFavoriteTrack ->
+            if (isFavoriteTrack) binding.buttonFavorites.setImageResource(R.drawable.add_favorites_filled)
+            else binding.buttonFavorites.setImageResource(R.drawable.add_favorites)
         }
     }
 

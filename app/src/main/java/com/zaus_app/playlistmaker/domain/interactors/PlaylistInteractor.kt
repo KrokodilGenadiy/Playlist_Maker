@@ -1,0 +1,20 @@
+package com.zaus_app.playlistmaker.domain.interactors
+
+import android.net.Uri
+import com.zaus_app.playlistmaker.domain.entities.Playlist
+import com.zaus_app.playlistmaker.domain.entities.Track
+import kotlinx.coroutines.flow.Flow
+
+interface PlaylistInteractor {
+
+    suspend fun addPlaylist(playlist: Playlist)
+    fun getAllPlaylists(): Flow<List<Playlist>>
+    fun saveImageToPrivateStorage(uri: Uri): String
+    fun getImageFromPrivateStorage(imageName: String): Uri
+    suspend fun getPlaylistById(playlistId: Int): Playlist
+    suspend fun addTrackInPlaylist(track: Track, playlist: Playlist): Boolean
+    suspend fun updatePlaylistAndDeleteTrack(track: Track, playlist: Playlist)
+    suspend fun updatePlaylist(playlist: Playlist)
+    suspend fun deletePlaylist(playlistId: Int)
+    suspend fun getTrackById(trackId: Int): Track?
+}

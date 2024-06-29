@@ -1,8 +1,8 @@
 package com.zaus_app.playlistmaker.domain.di.modules
 
 import android.media.MediaPlayer
-import com.zaus_app.playlistmaker.data.implementations.AudioPlayerInteractorImpl
 import com.zaus_app.playlistmaker.data.implementations.AudioPlayerRepositoryImpl
+import com.zaus_app.playlistmaker.data.implementations.interactors.AudioPlayerInteractorImpl
 import com.zaus_app.playlistmaker.data.implementations.PreferenceProviderImpl
 import com.zaus_app.playlistmaker.domain.preferences.PreferenceProvider
 import com.zaus_app.playlistmaker.domain.repositrories.AudioPlayerRepository
@@ -19,7 +19,7 @@ val domainModule = module {
     }
 
     single<AudioPlayerRepository> {
-        AudioPlayerInteractorImpl(get())
+        AudioPlayerRepositoryImpl(get())
     }
 
 

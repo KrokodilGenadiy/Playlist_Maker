@@ -36,4 +36,7 @@
     <dimen name="dimens_6_dp">6dp</dimen>
     <dimen name="dimens_32_dp">32dp</dimen>
     <dimen name="dimens_50_dp">50dp</dimen>
+    <dimen name="dimens_91_dp">91dp</dimen>
+    <dimen name="dimens_248_dp">248</dimen>
+    <dimen name="dimens_44_dp">44dp</dimen>
 </resources>
