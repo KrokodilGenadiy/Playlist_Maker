@@ -6,13 +6,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zaus_app.playlistmaker.domain.entities.Playlist
 import com.zaus_app.playlistmaker.domain.entities.Track
+import com.zaus_app.playlistmaker.domain.entities.TrackInPlaylist
+import com.zaus_app.playlistmaker.domain.interactors.FavoritesInteractor
 import com.zaus_app.playlistmaker.domain.interactors.PlaylistInteractor
 import com.zaus_app.playlistmaker.presentation.fragments.playlist_fragment.PlaylistsState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class AddTrackViewModel(private val interactor: PlaylistInteractor): ViewModel() {
+class AddTrackViewModel(
+    private val interactor: PlaylistInteractor,
+    private val favoritesInteractor: FavoritesInteractor
+) : ViewModel() {
     private val stateLiveData = MutableLiveData<PlaylistsState>()
     fun observeState(): LiveData<PlaylistsState> = stateLiveData
 
@@ -46,5 +51,14 @@ class AddTrackViewModel(private val interactor: PlaylistInteractor): ViewModel()
         }
     }
 
-    suspend fun updatePlaylist(track: Track,playlist: Playlist): Boolean = interactor.addTrackInPlaylist(track,playlist)
+    fun addTrackToPlaylistTable(trackInPlaylist: TrackInPlaylist) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                favoritesInteractor.addTrackToPlaylistTable(trackInPlaylist)
+            }
+        }
+    }
+
+    suspend fun updatePlaylist(track: Track, playlist: Playlist): Boolean =
+        interactor.addTrackInPlaylist(track, playlist)
 }

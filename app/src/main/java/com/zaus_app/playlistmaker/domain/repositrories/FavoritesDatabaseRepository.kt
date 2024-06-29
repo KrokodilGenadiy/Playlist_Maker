@@ -1,6 +1,7 @@
 package com.zaus_app.playlistmaker.domain.repositrories
 
 import com.zaus_app.playlistmaker.domain.entities.Track
+import com.zaus_app.playlistmaker.domain.entities.TrackInPlaylist
 import kotlinx.coroutines.flow.Flow
 
 interface FavoritesDatabaseRepository {
@@ -10,4 +11,8 @@ interface FavoritesDatabaseRepository {
     fun getTracksIDs(): Flow<List<Int>>
     suspend fun getTrackById(trackId: Int): Track?
     fun getAllFavoritesTrack(): Flow<List<Track>>
+
+    suspend fun getPlaylistTrackById(trackId: Int): Track?
+
+    suspend fun addTrackToPlaylistTable(track: TrackInPlaylist)
 }

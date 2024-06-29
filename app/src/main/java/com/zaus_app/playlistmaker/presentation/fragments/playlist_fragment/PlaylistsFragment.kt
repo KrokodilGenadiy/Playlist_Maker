@@ -9,6 +9,7 @@ import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.zaus_app.playlistmaker.R
 import com.zaus_app.playlistmaker.databinding.FragmentPlaylistsBinding
+import com.zaus_app.playlistmaker.presentation.MainActivity
 import com.zaus_app.playlistmaker.presentation.rv_adapter.PlaylistAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -17,7 +18,7 @@ class PlaylistsFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: PlaylistsViewModel by viewModel()
     private val playlistAdapter = PlaylistAdapter { playlist ->
-
+        (requireActivity() as MainActivity).launchPlaylistDetailsFragment(playlist)
     }
 
     override fun onCreateView(

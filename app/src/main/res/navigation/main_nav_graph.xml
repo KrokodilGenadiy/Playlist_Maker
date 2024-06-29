@@ -50,6 +50,11 @@
             android:id="@+id/action_addTrackFragment_to_newPlaylistFragment"
             app:destination="@id/newPlaylistFragment" />
     </dialog>
+    <fragment
+        android:id="@+id/playlistDetailsFragment"
+        android:name="com.zaus_app.playlistmaker.presentation.fragments.playlist_details.PlaylistDetailsFragment"
+        android:label="fragment_playlist_details"
+        tools:layout="@layout/fragment_playlist_details" />
 
 
 </navigation>
