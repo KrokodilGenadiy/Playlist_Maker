@@ -25,27 +25,7 @@ class AddTrackFragment : BottomSheetDialogFragment() {
     private val viewModel: AddTrackViewModel by viewModel()
     private val playlistAdapter = AddTrackAdapter { playlist, position ->
         val track = arguments?.get("track") as Track
-        viewModel.viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                if (viewModel.updatePlaylist(track, playlist)) {
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(
-                            requireContext(),
-                            "Добавлено в плейлист ${playlist.playlistName}",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        updateItem(position)
-                    }
-                } else
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(
-                            requireContext(),
-                            "Трек уже добавлен в плейлист ${playlist.playlistName}",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-            }
-        }
+        viewModel.updatePlaylist(track,playlist,position)
     }
 
     private fun updateItem(position: Int) {
@@ -67,6 +47,22 @@ class AddTrackFragment : BottomSheetDialogFragment() {
         setUpAdapter()
         binding.newPlaylist.setOnClickListener {
             findNavController().navigate(R.id.action_addTrackFragment_to_newPlaylistFragment)
+        }
+        viewModel.observeAddTrackMessage().observe(viewLifecycleOwner) { addTrackUiModel ->
+            if (addTrackUiModel.isAdded) {
+                Toast.makeText(
+                    requireContext(),
+                    "Добавлено в плейлист ${addTrackUiModel.playlist.playlistName}",
+                    Toast.LENGTH_LONG
+                ).show()
+                updateItem(addTrackUiModel.playlistPosition)
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "Трек уже добавлен в плейлист ${addTrackUiModel.playlist.playlistName}",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         }
         viewModel.observeState().observe(viewLifecycleOwner) {
             when (it) {
