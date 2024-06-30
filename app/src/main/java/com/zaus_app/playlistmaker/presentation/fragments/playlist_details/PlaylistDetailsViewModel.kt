@@ -13,6 +13,7 @@ import com.zaus_app.playlistmaker.domain.interactors.SettingsInteractor
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -47,6 +48,11 @@ private val favoritesInteractor: FavoritesInteractor,
     }
 
     fun updatePlaylist() {
+        viewModelScope.launch {
+        playlist.collectLatest {
+                playlist = flowOf(playlistsInteractor.getPlaylistById(it.id))
+            }
+        }
         getData()
     }
 

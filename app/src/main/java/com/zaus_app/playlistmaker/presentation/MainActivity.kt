@@ -33,6 +33,12 @@ class MainActivity : AppCompatActivity() {
         findNavController(R.id.fragment_placeholder).navigate(R.id.playerFragment,bundle)
     }
 
+    fun launchEditPlaylistFragment(playlist: Playlist) {
+        val bundle = Bundle()
+        bundle.putParcelable("playlist", playlist)
+        findNavController(R.id.fragment_placeholder).navigate(R.id.newPlaylistFragment,bundle)
+    }
+
     fun launchAddTrackFragment(track: Track) {
         val bundle = Bundle()
         bundle.putParcelable("track", track)

@@ -2,6 +2,7 @@ package com.zaus_app.playlistmaker.presentation.fragments.new_playlist
 
 import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,11 +15,14 @@ import androidx.core.net.toUri
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.zaus_app.playlistmaker.R
 import com.zaus_app.playlistmaker.databinding.FragmentMediaBinding
 import com.zaus_app.playlistmaker.databinding.FragmentNewPlaylistBinding
+import com.zaus_app.playlistmaker.domain.entities.Playlist
+import com.zaus_app.playlistmaker.domain.entities.Track
 import com.zaus_app.playlistmaker.presentation.fragments.playlist_fragment.PlaylistsViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -51,6 +55,21 @@ class NewPlaylistFragment : Fragment() {
     }
 
     private fun initUI() {
+        val playlist = arguments?.get("playlist") as Playlist?
+        if (playlist != null) {
+            binding.inputName.text = Editable.Factory.getInstance().newEditable(playlist.playlistName)
+            binding.inputDescription.text = Editable.Factory.getInstance().newEditable(playlist.description)
+            playlistName = playlist.playlistName
+           playlistDescription = playlist.description
+           playlistCoverUri = playlist.urlImage
+            binding.createPlaylist.isEnabled = true
+            binding.createPlaylist.text = "Редактировать"
+            Glide.with(requireContext())
+                .load(playlist.urlImage)
+                .centerCrop()
+                .placeholder(R.drawable.ic_playlist_placeholder)
+                .into(binding.addPicture)
+        }
         binding.inputName.doOnTextChanged { text, _, _, _ ->
             playlistName = text?.toString().orEmpty()
             binding.createPlaylist.isEnabled = playlistName.isNotBlank()
@@ -81,16 +100,20 @@ class NewPlaylistFragment : Fragment() {
                     delay(2000)
                     findNavController().navigateUp()
                 }
-
-
-                //binding.loadingIndicator.visibility = View.GONE
             }
         }
 
         binding.createPlaylist.setOnClickListener {
-            binding.loadingIndicator.visibility = View.VISIBLE
-            viewModel.addPlaylist(playlistName, playlistDescription, playlistCoverUri)
-            parentFragmentManager.popBackStack()
+            if (binding.createPlaylist.text == "Редактировать") {
+                val playlist = arguments?.get("playlist") as Playlist?
+                binding.loadingIndicator.visibility = View.VISIBLE
+                viewModel.editPlaylist(playlist!!,playlistName, playlistDescription, playlistCoverUri)
+                parentFragmentManager.popBackStack()
+            } else {
+                binding.loadingIndicator.visibility = View.VISIBLE
+                viewModel.addPlaylist(playlistName, playlistDescription, playlistCoverUri)
+                parentFragmentManager.popBackStack()
+            }
         }
 
         binding.btnBackFromNewPlayList.setNavigationOnClickListener {

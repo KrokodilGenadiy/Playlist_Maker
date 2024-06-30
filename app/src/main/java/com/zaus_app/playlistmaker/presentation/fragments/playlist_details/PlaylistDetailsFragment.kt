@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
@@ -115,8 +116,14 @@ class PlaylistDetailsFragment : Fragment() {
         }
 
         binding.editInfo.setOnClickListener {
-          //navigate to edit
+            val playlist = arguments?.get("playlist") as Playlist
+            (requireActivity() as MainActivity).launchEditPlaylistFragment(playlist)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getData()
     }
 
 
@@ -186,7 +193,11 @@ class PlaylistDetailsFragment : Fragment() {
             .setNeutralButton(R.string.no) { _, _ ->
             }
             .setNegativeButton(R.string.yes) { _, _ ->
-                viewModel.deletePlaylist()
+                viewLifecycleOwner.lifecycleScope.launch {
+                    viewModel.deletePlaylist()
+                    findNavController().navigate(R.id.action_playlistDetailsFragment_to_mediaFragment)
+                }
+
             }.show()
     }
 
@@ -197,7 +208,7 @@ class PlaylistDetailsFragment : Fragment() {
 
     private fun sharePlaylist() {
         if (trackAdapter.currentList.isEmpty()) {
-            Snackbar.make(requireView(),resources.getString(R.string.havent_created_any_track),Snackbar.LENGTH_LONG).show()
+            Toast.makeText(requireContext(),resources.getString(R.string.havent_created_any_track),Toast.LENGTH_LONG).show()
         } else {
             viewModel.sharePlaylist()
         }
