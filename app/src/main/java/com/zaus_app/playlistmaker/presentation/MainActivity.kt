@@ -10,6 +10,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.zaus_app.playlistmaker.App
 import com.zaus_app.playlistmaker.R
 import com.zaus_app.playlistmaker.databinding.ActivityMainBinding
+import com.zaus_app.playlistmaker.domain.entities.Playlist
 import com.zaus_app.playlistmaker.domain.entities.Track
 import com.zaus_app.playlistmaker.presentation.fragments.player_fragment.PlayerFragment
 
@@ -32,10 +33,22 @@ class MainActivity : AppCompatActivity() {
         findNavController(R.id.fragment_placeholder).navigate(R.id.playerFragment,bundle)
     }
 
+    fun launchEditPlaylistFragment(playlist: Playlist) {
+        val bundle = Bundle()
+        bundle.putParcelable("playlist", playlist)
+        findNavController(R.id.fragment_placeholder).navigate(R.id.newPlaylistFragment,bundle)
+    }
+
     fun launchAddTrackFragment(track: Track) {
         val bundle = Bundle()
         bundle.putParcelable("track", track)
         findNavController(R.id.fragment_placeholder).navigate(R.id.addTrackFragment,bundle)
+    }
+
+    fun launchPlaylistDetailsFragment(playlist: Playlist) {
+        val bundle = Bundle()
+        bundle.putParcelable("playlist", playlist)
+        findNavController(R.id.fragment_placeholder).navigate(R.id.playlistDetailsFragment,bundle)
     }
 
     private fun initNavigation() {

@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.zaus_app.playlistmaker.domain.entities.Track
+import com.zaus_app.playlistmaker.domain.entities.TrackInPlaylist
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -24,4 +25,10 @@ interface TrackDao {
 
     @Query("SELECT * FROM favorites_table WHERE trackId = :trackId")
     suspend fun getTrackById(trackId: Int): Track?
+
+    @Query("SELECT * FROM tracks_in_playlist WHERE trackId = :trackId")
+    suspend fun getPlaylistTrackById(trackId: Int): Track?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun addTrackToPlaylist(track: TrackInPlaylist)
 }

@@ -13,4 +13,12 @@
         <item name="background">@color/blue</item>
         <item name="bottomSheetDialogTheme">@style/CustomBottomSheetDialog</item>
     </style>
+
+    <style name="MaterialAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="materialAlertDialogTitleTextStyle">@style/PLMaterialAlertDialog.App.Title.Text</item>
+        <item name="buttonBarNegativeButtonStyle">@style/PLWidget.App.Button</item>
+        <item name="buttonBarNeutralButtonStyle">@style/PLWidget.App.Button</item>
+    </style>
+
+
 </resources>

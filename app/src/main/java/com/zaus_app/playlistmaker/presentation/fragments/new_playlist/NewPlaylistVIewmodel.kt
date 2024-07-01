@@ -34,4 +34,23 @@ open class NewPlaylistViewModel(
             statePlaylistLiveData.postValue(NewPlaylistState.Success)
         }
     }
+
+    fun editPlaylist(playlist: Playlist,playlistName: String, playlistDescription: String, imageUri: Uri?) {
+        viewModelScope.launch {
+            interactor.updatePlaylist(
+                Playlist(
+                    playlist.id,
+                    playlistName,
+                    playlistDescription,
+                    if (imageUri != null)
+                        interactor.getImageFromPrivateStorage(
+                            interactor.saveImageToPrivateStorage(imageUri)
+                        ) else playlist.urlImage,
+                    playlist.tracks,
+                    playlist.tracksCount
+                )
+            )
+            statePlaylistLiveData.postValue(NewPlaylistState.Success)
+        }
+    }
 }

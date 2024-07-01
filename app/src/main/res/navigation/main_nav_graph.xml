@@ -40,7 +40,11 @@
         android:id="@+id/newPlaylistFragment"
         android:name="com.zaus_app.playlistmaker.presentation.fragments.new_playlist.NewPlaylistFragment"
         android:label="fragment_new_playlist"
-        tools:layout="@layout/fragment_new_playlist" />
+        tools:layout="@layout/fragment_new_playlist" >
+        <action
+            android:id="@+id/action_newPlaylistFragment_to_mediaFragment"
+            app:destination="@id/mediaFragment" />
+    </fragment>
     <dialog
         android:id="@+id/addTrackFragment"
         android:name="com.zaus_app.playlistmaker.presentation.fragments.add_track_to_playlist.AddTrackFragment"
@@ -50,6 +54,15 @@
             android:id="@+id/action_addTrackFragment_to_newPlaylistFragment"
             app:destination="@id/newPlaylistFragment" />
     </dialog>
+    <fragment
+        android:id="@+id/playlistDetailsFragment"
+        android:name="com.zaus_app.playlistmaker.presentation.fragments.playlist_details.PlaylistDetailsFragment"
+        android:label="fragment_playlist_details"
+        tools:layout="@layout/fragment_playlist_details" >
+        <action
+            android:id="@+id/action_playlistDetailsFragment_to_mediaFragment"
+            app:destination="@id/mediaFragment" />
+    </fragment>
 
 
 </navigation>

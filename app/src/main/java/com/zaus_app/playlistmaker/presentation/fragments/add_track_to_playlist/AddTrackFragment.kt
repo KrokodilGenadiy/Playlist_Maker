@@ -12,6 +12,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.zaus_app.playlistmaker.R
 import com.zaus_app.playlistmaker.databinding.FragmentAddTrackBinding
 import com.zaus_app.playlistmaker.domain.entities.Track
+import com.zaus_app.playlistmaker.domain.entities.TrackInPlaylist
 import com.zaus_app.playlistmaker.presentation.fragments.playlist_fragment.PlaylistsState
 import com.zaus_app.playlistmaker.presentation.rv_adapter.AddTrackAdapter
 import kotlinx.coroutines.Dispatchers
@@ -22,6 +23,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class AddTrackFragment : BottomSheetDialogFragment() {
     private var _binding: FragmentAddTrackBinding? = null
     private val binding get() = _binding!!
+
     private val viewModel: AddTrackViewModel by viewModel()
     private val playlistAdapter = AddTrackAdapter { playlist, position ->
         val track = arguments?.get("track") as Track
@@ -55,6 +57,11 @@ class AddTrackFragment : BottomSheetDialogFragment() {
                     "Добавлено в плейлист ${addTrackUiModel.playlist.playlistName}",
                     Toast.LENGTH_LONG
                 ).show()
+                val track = arguments?.get("track") as Track
+                with(track) {
+                    viewModel.addTrackToPlaylistTable(TrackInPlaylist(trackId, trackName, artistName, trackTimeMillis, artworkUrl100, collectionName, releaseDate, primaryGenreName, country, previewUrl, addTime))
+                }
+
                 updateItem(addTrackUiModel.playlistPosition)
             } else {
                 Toast.makeText(
