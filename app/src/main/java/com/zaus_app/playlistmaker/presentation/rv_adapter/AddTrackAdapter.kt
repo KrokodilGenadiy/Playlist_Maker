@@ -37,13 +37,23 @@ class AddTrackAdapter(private val clickListener: OnItemClickListener)  :
         fun bind(playlist: Playlist) {
             binding.apply {
                 playlistName.text = playlist.playlistName
-                trackCount.text = playlist.tracksCount.toString()
+                trackCount.text = playlist.tracksCount.toString() + " "+changeRussianWordsAsTracks(playlist.tracksCount)
                 Glide.with(root.context)
                     .load(playlist.urlImage)
                     .centerCrop()
                     .placeholder(R.drawable.playlist_placeholder)
                     .into(placeHolder)
             }
+        }
+    }
+
+    internal fun changeRussianWordsAsTracks(countTrack: Int): String {
+        val num = countTrack % 100
+        return when {
+            num in 10..20 -> "треков"
+            num % 10 == 1 -> "трек"
+            num % 10 in 2..4 -> "трека"
+            else -> "треков"
         }
     }
 

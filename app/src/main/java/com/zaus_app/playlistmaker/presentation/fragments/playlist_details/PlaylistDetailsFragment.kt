@@ -142,6 +142,8 @@ class PlaylistDetailsFragment : Fragment() {
             .into(binding.playlistCover)
         if (!playlist.listTracks.isNullOrEmpty()) {
             trackAdapter.submitList(playlist.listTracks as ArrayList<Track>)
+        } else {
+            //binding.placeholderMessage.text = "В плейлисте нет треков"
         }
         binding.playlistDuration.text = playlist.playlistDuration
         binding.tracksCount.text = playlist.playlistCountTrack
@@ -179,10 +181,15 @@ class PlaylistDetailsFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.playlist.collectLatest {
                 it.tracks.remove(trackAdapter.currentList[position].trackId)
-                viewModel.getData()
+        /*        if (it.tracks.isEmpty())
+                    binding.placeholderMessage.text = "В списке нет треков"
+                else
+                    binding.placeholderMessage.text = it.playlistName*/
+                        viewModel.getData()
             }
         }
         result.removeAt(position)
+
         trackAdapter.submitList(result)
     }
 

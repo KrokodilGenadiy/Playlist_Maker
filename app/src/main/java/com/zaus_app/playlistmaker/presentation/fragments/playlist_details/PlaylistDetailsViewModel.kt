@@ -85,14 +85,13 @@ private val favoritesInteractor: FavoritesInteractor,
         }
     }
 
-    private fun getDurationAllTrack(tracksInPlaylist: List<Track>?): String {
+    private fun getDurationAllTrack(tracksInPlaylist: List<Track>): String {
         var duration = 0
-        viewModelScope.launch {
-            tracksInPlaylist?.map {
-                duration += it.trackTimeMillis?.toInt() ?: 0
-            }
+        tracksInPlaylist.forEach {
+                duration += it.trackTimeMillis.toInt()
         }
-        return msToMm(duration.toString()) + " " + changeRussianWordsAsMinutes(duration)
+        val result = msToMm(duration.toString()) + " " + changeRussianWordsAsMinutes(duration)
+        return  result
     }
 
     fun deleteTrackFromPlaylist(track: Track) {

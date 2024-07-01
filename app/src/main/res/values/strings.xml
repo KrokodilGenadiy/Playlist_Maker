@@ -53,4 +53,5 @@
     <string name="yes">Да</string>
     <string name="no">Нет</string>
     <string name="havent_created_any_track">Вы не добавили ни одного трека</string>
+    <string name="placeholder_message">В плейлисте нет треков</string>
 </resources>
