@@ -8,6 +8,7 @@
     <string name="write_to_support">Написать в поддержку</string>
     <string name="share_app">Поделиться приложением</string>
     <string name="search_screen_header">Поиск</string>
+    <string name="media_screen_header">Медиатека</string>
     <string name="search_hint">Поиск</string>
     <string name="email">"example@mail.com"</string>
     <string name="subject">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
@@ -20,13 +21,26 @@
     <string name="text_type">text/plain</string>
     <string name="share_course">Поделиться курсом</string>
     <string name="placeholder_nf_text">Ничего не нашлось</string>
+    <string name="placeholder_media_empty">Ваша медиатека пуста</string>
+    <string name="placeholder_playlists_empty">Вы не создали  ни одного плейлиста</string>
     <string name="placeholder_ce_text">Проблемы со связью \n\n Загрузка не удалась. Проверьте подключение к интернету</string>
     <string name="refresh">Обновить</string>
     <string name="history_searched_text">Вы искали</string>
     <string name="clear_history_text">Очистить историю</string>
+    <string name="create_playlist_text">Новый плейлист</string>
     <string name="year">Год</string>
     <string name="genre">Жанр</string>
     <string name="country">Страна</string>
     <string name="duration">Длительность</string>
     <string name="album">Альбом</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="menu_search_title">Поиск</string>
+    <string name="menu_media_title">Медиатека</string>
+    <string name="menu_settings_title">Настройки</string>
+    <string name="new_play_list">Новый плейлист</string>
+    <string name="create">Создать</string>
+    <string name="description">Описание</string>
+    <string name="name">Название*</string>
+    <string name="playlist_text">Playlist name</string>
+    <string name="addToPlaylist">Добавить в плейлист</string>
 </resources>

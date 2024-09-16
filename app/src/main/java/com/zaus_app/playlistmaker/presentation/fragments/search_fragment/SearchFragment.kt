@@ -1,13 +1,17 @@
 package com.zaus_app.playlistmaker.presentation.fragments.search_fragment
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.ImageView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -15,6 +19,7 @@ import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.zaus_app.playlistmaker.R
 import com.zaus_app.playlistmaker.domain.entities.Track
 import com.zaus_app.playlistmaker.data.base.ResultResponse
 import com.zaus_app.playlistmaker.databinding.FragmentSearchBinding
@@ -49,13 +54,10 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.arrowBack.setOnClickListener {
-            parentFragmentManager.popBackStack()
-        }
         setUpAdapter()
-        setUpHistory()
         initSearchView()
         search()
+        setUpHistory()
         enableRefresh()
     }
 
@@ -154,9 +156,19 @@ class SearchFragment : Fragment() {
 
     private fun enableRefresh() {
         binding.refresh.setOnClickListener {
+            viewModel.setQuery("")
             viewModel.setQuery(binding.searchView.query.toString())
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        if (trackAdapter.currentList.isNotEmpty() || binding.searchView.query.isNotEmpty()) {
+            binding.ncPlaceholder.root.visibility = View.GONE
+            binding.historyContainer.visibility = View.GONE
+        }
+    }
+
 
     private fun setUpAdapter() {
         binding.trackRecycler.apply {

@@ -9,9 +9,12 @@
     <color name="blue">#3772E7</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="yp_gray">#AEAFB4</color>
     <color name="circle_shape">#40FFFFFF</color>
-    <color name="refresh_text_color">#1A1B22</color>
+    <color name="primary">#1A1B22</color>
+    <color name="second_primary">#FFFFFFFF</color>
     <color name="classic_text">#FFFFFF</color>
+    <color name="bottom_nav">#1A1B22</color>
     <color name="track_item_name_text">#FFFFFF</color>
     <color name="track_item_artist_text">#FFFFFF</color>
 </resources>

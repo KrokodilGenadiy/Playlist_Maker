@@ -8,6 +8,7 @@ import com.zaus_app.playlistmaker.domain.entities.Track
 import com.zaus_app.playlistmaker.domain.preferences.PreferenceProvider
 import com.zaus_app.playlistmaker.data.implementations.PreferenceProviderImpl
 import com.zaus_app.playlistmaker.domain.usecase.RemoteUseCase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,6 +20,8 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SearchViewModel(private val remoteUseCase: RemoteUseCase, private val preferenceProviderImpl: PreferenceProvider): ViewModel() {
 
@@ -32,8 +35,6 @@ class SearchViewModel(private val remoteUseCase: RemoteUseCase, private val pref
         else
             flowOf(ResultResponse.Initial)
     }.stateIn(viewModelScope, SharingStarted.Lazily, ResultResponse.Initial)
-
-    fun search(term: String) = remoteUseCase.getTracksFromWeb(term)
 
     fun saveTrack(track: Track) {
         preferenceProviderImpl.saveTrack(track)
